@@ -1,6 +1,6 @@
 class PrisdleApp {
   constructor() {
-    this.gameEngine = null;
+    this.gameManager = null;
     this.uiManager = null;
     this.initialized = false;
   }
@@ -12,8 +12,8 @@ class PrisdleApp {
       // Initialize UI manager
       this.uiManager = new UIManager();
       
-      // Initialize game engine
-      this.gameEngine = new GameEngine();
+      // Initialize game manager
+      this.gameManager = new GameManager();
       
       // Simulate boot sequence
       await this.simulateBootSequence();
@@ -21,9 +21,8 @@ class PrisdleApp {
       // Hide boot screen and show game
       this.uiManager.hideBoot();
       
-      // Start the game
-      this.gameEngine.startGame();
-      this.renderCurrentQuestion();
+      // Display first question
+      this.showCurrentQuestion();
       
       this.initialized = true;
       console.log('[App] Prisddle initialized successfully');
@@ -52,10 +51,10 @@ class PrisdleApp {
     await new Promise(resolve => setTimeout(resolve, 800));
   }
 
-  renderCurrentQuestion() {
-    const question = this.gameEngine.currentQuestion;
-    const qIndex = this.gameEngine.currentQuestionIndex;
-    const total = this.gameEngine.questions.length;
+  showCurrentQuestion() {
+    const question = this.gameManager.getCurrentQuestion();
+    const qIndex = this.gameManager.state.currentQuestion;
+    const total = this.gameManager.questions.length;
 
     this.uiManager.displayQuestion(question, qIndex, total);
     
@@ -65,30 +64,41 @@ class PrisdleApp {
   }
 
   handleAnswer(answerIndex) {
-    const isCorrect = this.gameEngine.submitAnswer(answerIndex);
+    const question = this.gameManager.getCurrentQuestion();
+    const isCorrect = question.correct === answerIndex;
     
     if (isCorrect) {
       this.uiManager.markAnswerCorrect(answerIndex);
+      this.gameManager.handleCorrect();
       audioEngine.playCorrect();
     } else {
       this.uiManager.markAnswerWrong(answerIndex);
       this.uiManager.disableWrongAnswers();
+      this.gameManager.handleWrong();
       audioEngine.playWrong();
     }
 
     setTimeout(() => {
-      if (this.gameEngine.isGameOver()) {
-        const stats = this.gameEngine.getGameStats();
+      if (this.gameManager.isGameOver()) {
+        this.gameManager.endGame();
+        const stats = {
+          score: this.gameManager.state.score,
+          correctAnswers: this.gameManager.state.correctAnswers,
+          totalAnswered: this.gameManager.state.totalAnswered,
+          accuracy: Math.round((this.gameManager.state.correctAnswers / this.gameManager.state.totalAnswered) * 100),
+          rank: this.gameManager.calculateRank(Math.round((this.gameManager.state.correctAnswers / this.gameManager.state.totalAnswered) * 100))
+        };
         this.uiManager.showResultScreen(stats);
       } else {
-        this.renderCurrentQuestion();
+        this.gameManager.nextQuestion();
+        this.showCurrentQuestion();
       }
     }, 1500);
   }
 
   resetGame() {
-    this.gameEngine.startGame();
-    this.renderCurrentQuestion();
+    this.gameManager.resetState();
+    this.showCurrentQuestion();
   }
 }
 
