@@ -9,27 +9,27 @@ class PrisdleApp {
     try {
       console.log('[App] Initializing Prisddle...');
       
-      // Initialize UI manager
+      // Initialize managers
       this.uiManager = new UIManager();
-      
-      // Initialize game manager
       this.gameManager = new GameManager();
       
-      // Simulate boot sequence
+      // Boot sequence
       await this.simulateBootSequence();
       
-      // Hide boot screen (with fade)
-      this.uiManager.hideBoot();
+      // Hide boot screen WITHOUT animation
+      const bootContainer = document.getElementById('bootContainer');
+      bootContainer.style.display = 'none';
       
-      // Wait for boot to fully hide
-      await new Promise(resolve => setTimeout(resolve, 350));
-      
-      // Show game screen (NO fade - just display)
+      // Show game - FORCE opacity and display
       const gameContainer = document.getElementById('gameContainer');
-      gameContainer.style.display = 'flex';
       gameContainer.style.opacity = '1';
+      gameContainer.style.display = 'flex';
+      gameContainer.style.visibility = 'visible';
+      gameContainer.style.pointerEvents = 'auto';
       
-      // Display first question
+      console.log('[Debug] Game container forced visible');
+      
+      // Show first question
       this.showCurrentQuestion();
       
       this.initialized = true;
@@ -56,7 +56,7 @@ class PrisdleApp {
       await new Promise(resolve => setTimeout(resolve, 400));
     }
 
-    await new Promise(resolve => setTimeout(resolve, 800));
+    await new Promise(resolve => setTimeout(resolve, 600));
   }
 
   showCurrentQuestion() {
@@ -65,7 +65,6 @@ class PrisdleApp {
     const total = this.gameManager.questions.length;
 
     this.uiManager.displayQuestion(question, qIndex, total);
-    
     this.uiManager.displayAnswers(question.answers, (answerIndex) => {
       this.handleAnswer(answerIndex);
     });
@@ -102,11 +101,6 @@ class PrisdleApp {
         this.showCurrentQuestion();
       }
     }, 1500);
-  }
-
-  resetGame() {
-    this.gameManager.resetState();
-    this.showCurrentQuestion();
   }
 }
 
