@@ -9,25 +9,26 @@ class PrisdleApp {
     try {
       console.log('[App] Initializing Prisddle...');
       
-      // Initialize UI first (no async dependencies)
+      // Initialize UI manager
       this.uiManager = new UIManager();
-      this.uiManager.showBootScreen();
       
       // Initialize game engine
       this.gameEngine = new GameEngine();
       
-      // Show boot sequence
+      // Simulate boot sequence
       await this.simulateBootSequence();
       
-      // Initialize game
+      // Hide boot screen and show game
+      this.uiManager.hideBoot();
+      
+      // Start the game
       this.gameEngine.startGame();
-      this.uiManager.renderQuestion(this.gameEngine.currentQuestion);
+      this.renderCurrentQuestion();
       
       this.initialized = true;
       console.log('[App] Prisddle initialized successfully');
     } catch (error) {
       console.error('[App] Initialization error:', error);
-      this.uiManager.showError('Failed to initialize game: ' + error.message);
     }
   }
 
@@ -42,30 +43,52 @@ class PrisdleApp {
     ];
 
     for (let msg of bootMessages) {
-      await new Promise(resolve => setTimeout(resolve, 500));
-      this.uiManager.addBootLog(msg);
+      const logLine = document.createElement('div');
+      logLine.textContent = msg;
+      document.querySelector('.boot-logs')?.appendChild(logLine);
+      await new Promise(resolve => setTimeout(resolve, 400));
     }
 
     await new Promise(resolve => setTimeout(resolve, 800));
-    this.uiManager.transitionToGame();
   }
 
-  handleAnswer(questionIndex, answerIndex) {
-    const isCorrect = this.gameEngine.submitAnswer(questionIndex, answerIndex);
-    this.uiManager.showAnswerResult(isCorrect);
+  renderCurrentQuestion() {
+    const question = this.gameEngine.currentQuestion;
+    const qIndex = this.gameEngine.currentQuestionIndex;
+    const total = this.gameEngine.questions.length;
+
+    this.uiManager.displayQuestion(question, qIndex, total);
     
+    this.uiManager.displayAnswers(question.answers, (answerIndex) => {
+      this.handleAnswer(answerIndex);
+    });
+  }
+
+  handleAnswer(answerIndex) {
+    const isCorrect = this.gameEngine.submitAnswer(answerIndex);
+    
+    if (isCorrect) {
+      this.uiManager.markAnswerCorrect(answerIndex);
+      audioEngine.playCorrect();
+    } else {
+      this.uiManager.markAnswerWrong(answerIndex);
+      this.uiManager.disableWrongAnswers();
+      audioEngine.playWrong();
+    }
+
     setTimeout(() => {
       if (this.gameEngine.isGameOver()) {
-        this.uiManager.showGameOver(this.gameEngine.getGameStats());
+        const stats = this.gameEngine.getGameStats();
+        this.uiManager.showResultScreen(stats);
       } else {
-        this.uiManager.renderQuestion(this.gameEngine.currentQuestion);
+        this.renderCurrentQuestion();
       }
     }, 1500);
   }
 
   resetGame() {
     this.gameEngine.startGame();
-    this.uiManager.renderQuestion(this.gameEngine.currentQuestion);
+    this.renderCurrentQuestion();
   }
 }
 
