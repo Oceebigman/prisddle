@@ -18,8 +18,11 @@ class PrisdleApp {
       // Simulate boot sequence
       await this.simulateBootSequence();
       
-      // Hide boot screen and show game
+      // Hide boot screen
       this.uiManager.hideBoot();
+      
+      // Show game screen
+      this.uiManager.showGame();
       
       // Display first question
       this.showCurrentQuestion();
