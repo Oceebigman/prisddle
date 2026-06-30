@@ -18,11 +18,16 @@ class PrisdleApp {
       // Simulate boot sequence
       await this.simulateBootSequence();
       
-      // Hide boot screen
+      // Hide boot screen (with fade)
       this.uiManager.hideBoot();
       
-      // Show game screen
-      this.uiManager.showGame();
+      // Wait for boot to fully hide
+      await new Promise(resolve => setTimeout(resolve, 350));
+      
+      // Show game screen (NO fade - just display)
+      const gameContainer = document.getElementById('gameContainer');
+      gameContainer.style.display = 'flex';
+      gameContainer.style.opacity = '1';
       
       // Display first question
       this.showCurrentQuestion();
