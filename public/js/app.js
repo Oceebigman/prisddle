@@ -1,159 +1,75 @@
 class PrisdleApp {
   constructor() {
-    this.isAnswering = false;
-    this.initializeApp();
+    this.gameEngine = null;
+    this.uiManager = null;
+    this.initialized = false;
   }
 
-  initializeApp() {
-    this.setupEventListeners();
-    this.runBootSequence();
+  async initialize() {
+    try {
+      console.log('[App] Initializing Prisddle...');
+      
+      // Initialize UI first (no async dependencies)
+      this.uiManager = new UIManager();
+      this.uiManager.showBootScreen();
+      
+      // Initialize game engine
+      this.gameEngine = new GameEngine();
+      
+      // Show boot sequence
+      await this.simulateBootSequence();
+      
+      // Initialize game
+      this.gameEngine.startGame();
+      this.uiManager.renderQuestion(this.gameEngine.currentQuestion);
+      
+      this.initialized = true;
+      console.log('[App] Prisddle initialized successfully');
+    } catch (error) {
+      console.error('[App] Initialization error:', error);
+      this.uiManager.showError('Failed to initialize game: ' + error.message);
+    }
   }
 
-  setupEventListeners() {
-    get('#muteBtn').addEventListener('click', () => {
-      const muted = audioEngine.toggleMute();
-      uiManager.updateMuteButton(muted);
-    });
-
-    get('#educationalCard').addEventListener('click', (e) => {
-      if (e.target.id === 'educationalCard') {
-        this.continueGame();
-      }
-    });
-
-    get('#eduButton').addEventListener('click', () => {
-      this.continueGame();
-    });
-  }
-
-  async runBootSequence() {
-    const logs = [
-      '◆ INITIALIZING PRISDDLE CORE...',
-      '▶ NEURAL NETWORK: ONLINE',
-      '▶ ROBOTICS ENGINE: READY',
-      '▶ AI KNOWLEDGE BASE: LOADED',
-      '▶ SYNC PROTOCOL: ESTABLISHED',
-      '◆ ALL SYSTEMS GO. LET\'S LEARN.',
+  async simulateBootSequence() {
+    const bootMessages = [
+      'INITIALIZING PRISDDLE CORE...',
+      'LOADING NEURAL NETWORKS...',
+      'CALIBRATING AI SYSTEMS...',
+      'SYNCING DECISION ENGINE...',
+      'PRIMING QUANTUM PROCESSORS...',
+      'SYSTEM READY FOR ENGAGEMENT'
     ];
 
-    for (let i = 0; i < logs.length; i++) {
-      const logEl = createElement('div', 'boot-log-line', logs[i]);
-      get('#bootLogs').appendChild(logEl);
-      
-      const percentage = Math.floor((i / logs.length) * 100);
-      uiManager.updateSyncBar(percentage);
-      
-      await delay(300);
+    for (let msg of bootMessages) {
+      await new Promise(resolve => setTimeout(resolve, 500));
+      this.uiManager.addBootLog(msg);
     }
 
-    await delay(500);
-    uiManager.updateSyncBar(100);
-    uiManager.hideBoot();
-    uiManager.showGame();
+    await new Promise(resolve => setTimeout(resolve, 800));
+    this.uiManager.transitionToGame();
+  }
+
+  handleAnswer(questionIndex, answerIndex) {
+    const isCorrect = this.gameEngine.submitAnswer(questionIndex, answerIndex);
+    this.uiManager.showAnswerResult(isCorrect);
     
-    await delay(300);
-    this.startGame();
-  }
-
-  startGame() {
-    gameManager.resetState();
-    this.showNextQuestion();
-  }
-
-  showNextQuestion() {
-    const question = gameManager.getCurrentQuestion();
-    const index = gameManager.state.currentQuestion;
-    const total = gameManager.questions.length;
-
-    uiManager.displayQuestion(question, index, total);
-    uiManager.displayAnswers(question.answers, (answerIndex) => {
-      this.handleAnswer(answerIndex);
-    });
-    
-    uiManager.updateStats(
-      gameManager.state.level,
-      gameManager.state.streak,
-      gameManager.state.lives
-    );
-
-    this.isAnswering = false;
-  }
-
-  handleAnswer(answerIndex) {
-    if (this.isAnswering) return;
-    this.isAnswering = true;
-
-    const isCorrect = gameManager.selectAnswer(answerIndex);
-    const question = gameManager.getCurrentQuestion();
-
-    if (isCorrect) {
-      uiManager.markAnswerCorrect(answerIndex);
-      gameManager.handleCorrect();
-      
-      const achievement = gameManager.checkAchievements();
-      if (achievement) {
-        uiManager.showAchievementNotification(achievement);
-      }
-
-      setTimeout(() => {
-        uiManager.showEducationalCard(question.educational);
-      }, 600);
-    } else {
-      uiManager.markAnswerWrong(answerIndex);
-      gameManager.handleWrong();
-      
-      uiManager.showHint(question.hint);
-      uiManager.disableWrongAnswers();
-      
-      setTimeout(() => {
-        this.continueGame();
-      }, 1500);
-    }
-  }
-
-  continueGame() {
-    uiManager.closeEducationalCard();
-    uiManager.feedbackContainer.textContent = '';
-    
-    gameManager.nextQuestion();
-
-    if (gameManager.isGameOver()) {
-      setTimeout(() => this.endGame(), 500);
-    } else {
-      setTimeout(() => this.showNextQuestion(), 500);
-    }
-  }
-
-  endGame() {
-    const result = gameManager.endGame();
-    uiManager.showResultScreen(result);
-
     setTimeout(() => {
-      const restartBtn = get('#restartBtn');
-      const shareBtn = get('#shareBtn');
+      if (this.gameEngine.isGameOver()) {
+        this.uiManager.showGameOver(this.gameEngine.getGameStats());
+      } else {
+        this.uiManager.renderQuestion(this.gameEngine.currentQuestion);
+      }
+    }, 1500);
+  }
 
-      restartBtn.addEventListener('click', () => {
-        location.reload();
-      });
-
-      shareBtn.addEventListener('click', () => {
-        const text = `🎮 I scored ${result.score} points on Prisddle!\n🤖 Rank: ${result.rank}\n🎯 Accuracy: ${result.accuracy}%\n\n⚡ Test your AI knowledge: https://prisddle.com`;
-        
-        if (navigator.share) {
-          navigator.share({
-            title: 'Prisddle - AI Robotics Quiz',
-            text: text,
-            url: 'https://prisddle.com'
-          });
-        } else {
-          alert('Your score: ' + result.score + ' points!');
-        }
-      });
-    }, 500);
+  resetGame() {
+    this.gameEngine.startGame();
+    this.uiManager.renderQuestion(this.gameEngine.currentQuestion);
   }
 }
 
-// Initialize app
-window.addEventListener('DOMContentLoaded', () => {
-  new PrisdleApp();
+const app = new PrisdleApp();
+document.addEventListener('DOMContentLoaded', () => {
+  app.initialize();
 });
