@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prisddle - AI Robotics Quiz Game</title>
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/animations.css">
+</head>
+<body>
+    <!-- Neural Background -->
+    <div id="neuralBg" class="neural-bg">
+        <canvas id="neuralCanvas"></canvas>
+        <div class="scan-lines"></div>
+    </div>
+
+    <!-- Boot Sequence -->
+    <div id="bootContainer" class="boot-screen">
+        <div class="boot-content">
+            <div class="prisddle-logo">◆ PRISDDLE ◆</div>
+            <div id="bootLogs" class="boot-logs"></div>
+        </div>
+    </div>
+
+    <!-- Game Container -->
+    <div id="gameContainer" class="game-container" style="display: none;">
+        <!-- System Bar -->
+        <div class="system-bar">
+            <div class="system-bar-left">
+                <div class="status-indicator"></div>
+                <span class="status-text">SYNC:</span>
+                <div class="sync-bar">
+                    <div id="syncPercentageBar" class="sync-fill"></div>
+                </div>
+            </div>
+            <div class="system-bar-center"></div>
+            <div class="system-bar-right">
+                <button id="muteBtn" class="mute-btn">🔊</button>
+            </div>
+        </div>
+
+        <!-- Main Stage -->
+        <div class="main-stage">
+            <div id="questionHero" class="question-hero">
+                <div class="question-meta">
+                    <span id="questionNumber" class="question-number">1/10</span>
+                    <span id="questionCategory" class="question-category">NEURAL NETWORKS 🧠</span>
+                </div>
+                <h1 id="questionText" class="question-text">Loading question...</h1>
+            </div>
+
+            <div id="answersSection" class="answers-container"></div>
+
+            <div id="feedbackContainer" class="feedback-container"></div>
+
+            <div class="stage-footer">
+                <div class="footer-stat">
+                    <span class="stat-label">LEVEL</span>
+                    <span id="levelDisplayFooter" class="stat-value">1</span>
+                </div>
+                <div class="footer-stat">
+                    <span class="stat-label">STREAK</span>
+                    <span id="streakValueFooter" class="stat-value">0</span>
+                </div>
+                <div class="footer-stat">
+                    <span class="stat-label">LIVES</span>
+                    <span id="livesValueFooter" class="stat-value">3</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Educational Card -->
+    <div id="educationalCard" class="educational-card" style="display: none;">
+        <div class="edu-content">
+            <div id="eduIcon" class="edu-icon"></div>
+            <h2 id="eduTitle" class="edu-title"></h2>
+            <p id="eduExplanation" class="edu-explanation"></p>
+            <p id="eduRelevance" class="edu-relevance"></p>
+            <button id="eduButton" class="edu-button">CONTINUE</button>
+        </div>
+    </div>
+
+    <!-- Results Screen -->
+    <div id="resultContainer" class="result-container" style="display: none;">
+        <div id="resultCard" class="result-card"></div>
+    </div>
+
+    <!-- Notifications -->
+    <div id="notificationContainer" class="notification-container"></div>
+
+    <!-- Scripts -->
+    <script src="/js/utils.js"></script>
+    <script src="/js/storage.js"></script>
+    <script src="/js/audio.js"></script>
+    <script src="/js/animations.js"></script>
+    <script src="/js/ui.js"></script>
+    <script src="/js/game.js"></script>
+    <script src="/js/app.js"></script>
+</body>
+</html>
