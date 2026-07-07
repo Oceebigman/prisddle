@@ -12,7 +12,7 @@ export default function CreateRoomPage() {
   const [duration, setDuration] = useState('1200');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
-  const [created, setCreated] = useState<{ id: string; code: string } | null>(null);
+  const [created, setCreated] = useState<{ id: string; room_code: string } | null>(null);
 
   useEffect(() => {
     if (!isAdmin) {
@@ -65,7 +65,7 @@ export default function CreateRoomPage() {
         {created ? (
           <div className="bg-green-900 border border-green-600 rounded-lg p-6 text-center">
             <h2 className="text-2xl font-bold mb-4">✓ Room Created!</h2>
-            <p className="mb-4">Game Code: <span className="font-mono font-bold text-green-300">{created.code}</span></p>
+            <p className="mb-4">Game Code: <span className="font-mono font-bold text-green-300 text-xl">{created.room_code}</span></p>
             <p className="text-sm text-slate-300 mb-6">Share this code with players to join</p>
             <Link
               href={`/admin/rooms/${created.id}`}
