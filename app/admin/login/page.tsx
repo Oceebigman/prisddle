@@ -17,7 +17,6 @@ export default function AdminLoginPage() {
     setLoading(true);
 
     try {
-      // Verify password by attempting an admin API call
       const res = await fetch('/api/admin/rooms', {
         method: 'POST',
         headers: {
@@ -35,7 +34,6 @@ export default function AdminLoginPage() {
         throw new Error('Invalid admin key');
       }
 
-      // If we get here, key is valid
       login(password);
       router.push('/admin/dashboard');
     } catch (err) {
