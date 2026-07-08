@@ -4,10 +4,11 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { useAdmin } from '../admin-context';
+import AdminHeader from '../AdminHeader';
 
 export default function AdminDashboardPage() {
   const router = useRouter();
-  const { isAdmin, logout } = useAdmin();
+  const { isAdmin } = useAdmin();
 
   useEffect(() => {
     if (!isAdmin) {
@@ -19,48 +20,35 @@ export default function AdminDashboardPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-900 to-slate-800">
-      <nav className="bg-slate-800 p-4 border-b border-slate-700">
-        <div className="max-w-2xl mx-auto flex justify-between items-center">
-          <h1 className="text-2xl font-bold text-white">Prisddle Admin</h1>
-          <button
-            onClick={logout}
-            className="bg-red-600 hover:bg-red-700 text-white font-bold px-4 py-2 rounded-lg transition"
-          >
-            Logout
-          </button>
-        </div>
-      </nav>
+      <AdminHeader title="Prisddle Admin" />
 
-      <div className="max-w-2xl mx-auto p-6">
-        {/* Nav Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
+      <main className="max-w-4xl mx-auto px-6 py-10 space-y-6">
+        {/* Nav Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <Link href="/admin/rooms/create">
-            <div className="bg-slate-800/50 rounded-xl p-6 hover:bg-slate-700/50 cursor-pointer transition border border-slate-700">
-              <h2 className="text-xl font-bold text-white mb-2">Create New Room</h2>
-              <p className="text-slate-400">Start a new riddle competition</p>
+            <div className="block bg-slate-800/50 border border-slate-700 rounded-xl p-6 hover:border-blue-500 transition-colors cursor-pointer">
+              <h2 className="text-lg font-semibold text-white mb-1">Create New Room</h2>
+              <p className="text-slate-400 text-sm">Start a new riddle competition</p>
             </div>
           </Link>
 
-          <div className="bg-slate-800/50 rounded-xl p-6 border border-slate-700">
-            <h2 className="text-xl font-bold text-white mb-2">Active Rooms</h2>
-            <p className="text-slate-400">Manage running games</p>
+          <div className="bg-slate-800/50 border border-slate-700 rounded-xl p-6">
+            <h2 className="text-lg font-semibold text-white mb-1">Active Rooms</h2>
+            <p className="text-slate-400 text-sm">Manage running games</p>
           </div>
         </div>
 
-        {/* Quick Info Section - Separate Block */}
-        <div className="bg-slate-800/50 rounded-xl p-6 border border-slate-700 mt-8">
-          <h2 className="text-xl font-bold text-white mb-4">Quick Info</h2>
-          <p className="text-slate-300 mb-4">
-            Welcome to the Prisddle admin panel. You can:
-          </p>
-          <ul className="list-disc list-inside space-y-2 text-slate-400">
-            <li>Create new riddle competition rooms</li>
-            <li>Start and end games</li>
-            <li>View player submissions and scores</li>
-            <li>Monitor live player counts</li>
+        {/* Quick Info Card - Separate Below Grid */}
+        <div className="bg-slate-800/50 border border-slate-700 rounded-xl p-6">
+          <h2 className="text-lg font-semibold text-white mb-3">Quick Info</h2>
+          <ul className="space-y-2 text-sm text-slate-400">
+            <li>• Create new riddle competition rooms</li>
+            <li>• Start and end games</li>
+            <li>• View player submissions and scores</li>
+            <li>• Monitor live player counts</li>
           </ul>
         </div>
-      </div>
+      </main>
     </div>
   );
 }

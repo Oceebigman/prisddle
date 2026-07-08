@@ -27,29 +27,31 @@ export default function JoinPage() {
       });
 
       if (!res.ok) {
-        throw new Error('Failed to join');
+        throw new Error('Invalid room code or username');
       }
 
       const data = await res.json();
       localStorage.setItem('session_token', data.session_token);
       router.push(`/lobby/${roomCode.toUpperCase()}`);
     } catch (err) {
-      setError('Invalid room code or username');
+      setError(err instanceof Error ? err.message : 'Failed to join');
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-900 to-slate-800 flex items-center justify-center p-4">
-      <div className="max-w-md w-full">
-        <Link href="/" className="text-blue-400 hover:text-blue-300 text-sm font-bold mb-8">← Back</Link>
+    <div className="min-h-screen bg-gradient-to-b from-slate-900 to-slate-800 flex items-center justify-center px-4">
+      <div className="max-w-md mx-auto w-full">
+        <Link href="/" className="text-blue-400 hover:text-blue-300 text-sm font-medium mb-6 inline-block">
+          ← Back to Home
+        </Link>
 
-        <h1 className="text-3xl font-bold text-white mb-4 text-center">Join Game</h1>
+        <h1 className="text-3xl font-bold text-white text-center mb-8">Join Game</h1>
 
-        <form onSubmit={handleJoin} className="space-y-4">
+        <form onSubmit={handleJoin} className="space-y-5">
           <div>
-            <label className="block text-sm font-bold text-slate-300 mb-2">Game Code</label>
+            <label className="block text-sm font-medium text-slate-300 mb-1.5">Game Code</label>
             <input
               type="text"
               placeholder="e.g., ABC123"
@@ -57,25 +59,31 @@ export default function JoinPage() {
               onChange={(e) => setRoomCode(e.target.value.toUpperCase())}
               disabled={loading}
               maxLength={6}
-              className="w-full"
+              autoComplete="off"
+              autoCapitalize="characters"
+              className="w-full px-4 py-3 bg-slate-900/50 border border-slate-600 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-bold text-slate-300 mb-2">Username</label>
+            <label className="block text-sm font-medium text-slate-300 mb-1.5">Username</label>
             <input
               type="text"
               placeholder="Your name"
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               disabled={loading}
-              className="w-full"
+              className="w-full px-4 py-3 bg-slate-900/50 border border-slate-600 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
             />
           </div>
 
-          {error && <p className="text-red-400 text-sm font-bold">{error}</p>}
+          {error && <p className="text-red-400 text-sm font-medium">{error}</p>}
 
-          <button type="submit" disabled={loading} className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg transition disabled:opacity-50">
+          <button
+            type="submit"
+            disabled={loading || !roomCode || !username}
+            className="w-full py-3 px-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition-colors disabled:opacity-50"
+          >
             {loading ? 'Joining...' : 'Join Game'}
           </button>
         </form>
