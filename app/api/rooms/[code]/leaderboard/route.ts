@@ -1,25 +1,11 @@
 import { supabase } from '@/lib/supabase-server';
 import { getCached } from '@/lib/redis';
 import { NextResponse } from 'next/server';
-import crypto from 'crypto';
-
 export async function GET(
   req: Request,
   { params }: { params: Promise<{ code: string }> }
 ) {
   const { code } = await params;
-  const sessionToken = new URL(req.url).searchParams.get('session_token');
-  if (!sessionToken) return NextResponse.json({ error: 'Missing token' }, { status: 401 });
-
-  const tokenHash = crypto.createHash('sha256').update(sessionToken).digest('hex');
-  const { data: session } = await supabase
-    .from('player_sessions')
-    .select('id')
-    .eq('session_token_hash', tokenHash)
-    .single();
-
-  if (!session) return NextResponse.json({ error: 'Invalid token' }, { status: 401 });
-
   const leaderboard = await getCached(
     `room:${code}:leaderboard`,
     5,
@@ -29,9 +15,7 @@ export async function GET(
         .select('id')
         .eq('room_code', code.toUpperCase())
         .single();
-
       if (!room) return null;
-
       const { data: submissions } = await supabase
         .from('submissions')
         .select('player_id, score, time_used_seconds, correct_count, total_questions')
@@ -39,9 +23,7 @@ export async function GET(
         .order('score', { ascending: false })
         .order('time_used_seconds', { ascending: true })
         .limit(20);
-
       if (!submissions) return [];
-
       return Promise.all(
         submissions.map(async (sub) => {
           const { data: player } = await supabase
@@ -52,12 +34,14 @@ export async function GET(
           return {
             username: player?.username || 'Anonymous',
             score: sub.score,
+            correct_count: sub.correct_count,
+            total_questions: sub.total_questions,
+            time_used_seconds: sub.time_used_seconds,
             accuracy: Math.round((sub.correct_count / sub.total_questions) * 100),
           };
         })
       );
     }
   );
-
   return NextResponse.json(leaderboard || []);
 }
