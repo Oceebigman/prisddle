@@ -51,14 +51,14 @@ export default function LobbyPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-900 to-slate-800 flex items-center justify-center px-4">
-      <div className="max-w-md mx-auto px-6 py-16 flex flex-col gap-6 text-center w-full">
-        {/* Back Link - First in Normal Flow */}
-        <Link href="/" className="text-blue-400 hover:text-blue-300 text-sm font-medium self-start">
+      <div className="max-w-md mx-auto w-full flex flex-col gap-6">
+        {/* Back Link - Inside Container */}
+        <Link href="/" className="text-blue-400 hover:text-blue-300 text-sm font-medium">
           ← Back
         </Link>
 
         {/* Room Info Card */}
-        <div className="bg-slate-800/50 border border-slate-700 rounded-xl p-8">
+        <div className="bg-slate-800/50 border border-slate-700 rounded-xl p-8 text-center">
           <h1 className="text-4xl font-bold text-white">{status?.room_name}</h1>
           <p className="text-slate-400 mt-2">
             Code: <span className="font-mono text-blue-400">{code}</span>
@@ -66,7 +66,7 @@ export default function LobbyPage() {
         </div>
 
         {/* Players Card */}
-        <div className="bg-slate-800/50 border border-slate-700 rounded-xl p-8">
+        <div className="bg-slate-800/50 border border-slate-700 rounded-xl p-8 text-center">
           <p className="text-slate-400">Players Joined</p>
           <p className="text-5xl font-bold text-white mt-2">{status?.player_count}</p>
         </div>
@@ -76,8 +76,8 @@ export default function LobbyPage() {
           <Countdown startsAt={status.starts_at} endsAt={status.ends_at} onFinish={() => router.push(`/play/${code}`)} />
         )}
 
-        {/* Waiting Text - Outside Cards with Clear Gap */}
-        <p className="text-slate-400 text-sm animate-pulse mt-2">
+        {/* Waiting Text */}
+        <p className="text-center text-slate-400 text-sm animate-pulse">
           Waiting for host to start...
         </p>
       </div>

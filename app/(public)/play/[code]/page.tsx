@@ -7,6 +7,8 @@ import Countdown from '../../components/Countdown';
 interface Question {
   question_number: number;
   riddle_text: string;
+  options: string[];
+  correct_index: number;
 }
 
 export default function PlayPage() {
@@ -16,7 +18,7 @@ export default function PlayPage() {
   
   const [questions, setQuestions] = useState<Question[]>([]);
   const [roomStatus, setRoomStatus] = useState<any>(null);
-  const [answers, setAnswers] = useState<Record<number, string>>({});
+  const [answers, setAnswers] = useState<Record<number, number>>({});
   const [currentQuestion, setCurrentQuestion] = useState(1);
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(true);
@@ -35,7 +37,7 @@ export default function PlayPage() {
         const status = await statusRes.json();
         setRoomStatus(status);
 
-        const puzzleId = '7b86a0c6-3261-4d41-80fb-04d16d29393d';
+        const puzzleId = status.puzzle_id || '7b86a0c6-3261-4d41-80fb-04d16d29393d';
         const res = await fetch(`/api/puzzles/${puzzleId}/play?session_token=${sessionToken}`);
         if (res.ok) {
           const data = await res.json();
@@ -62,6 +64,10 @@ export default function PlayPage() {
     }
   };
 
+  const handleSelectOption = (optionIndex: number) => {
+    setAnswers({...answers, [currentQuestion]: optionIndex});
+  };
+
   const handleSubmit = async () => {
     if (submitting) return;
     
@@ -69,12 +75,21 @@ export default function PlayPage() {
     setSubmitting(true);
     
     try {
+      // Convert option indices to answer text
+      const submittedAnswers: Record<number, string> = {};
+      Object.entries(answers).forEach(([qNum, optionIdx]) => {
+        const q = questions.find(qu => qu.question_number === parseInt(qNum));
+        if (q && optionIdx !== undefined) {
+          submittedAnswers[qNum] = q.options[optionIdx as number];
+        }
+      });
+
       const res = await fetch('/api/submissions', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 
           session_token: sessionToken, 
-          submitted_answers: answers 
+          submitted_answers: submittedAnswers 
         }),
       });
 
@@ -116,8 +131,8 @@ export default function PlayPage() {
   }
 
   const question = questions.find((q) => q.question_number === currentQuestion);
-  const currentAnswer = answers[currentQuestion] || '';
-  const answeredCount = Object.values(answers).filter(a => a.trim()).length;
+  const currentAnswer = answers[currentQuestion];
+  const answeredCount = Object.keys(answers).length;
 
   return (
     <div className="min-h-screen bg-slate-900 p-4">
@@ -130,6 +145,7 @@ export default function PlayPage() {
           />
         )}
 
+        {/* Progress */}
         <div className="bg-slate-800 rounded-lg p-4 mb-6">
           <div className="flex justify-between items-center mb-3">
             <span className="text-slate-400">Question {currentQuestion} of {questions.length}</span>
@@ -143,21 +159,36 @@ export default function PlayPage() {
           </div>
         </div>
 
+        {/* Question Card */}
         <div className="bg-slate-800 rounded-lg p-8 mb-6">
-          <h2 className="text-2xl font-bold text-white mb-6">{question?.riddle_text}</h2>
-          <input 
-            type="text" 
-            placeholder="Your answer..."
-            value={currentAnswer}
-            onChange={(e) => setAnswers({...answers, [currentQuestion]: e.target.value})}
-            className="w-full px-4 py-3 bg-slate-700 text-white rounded-lg mb-4"
-            autoFocus
-          />
-          {currentAnswer && (
-            <p className="text-sm text-blue-400">Answer saved ✓</p>
+          <h2 className="text-2xl font-bold text-white mb-8">{question?.riddle_text}</h2>
+
+          {/* Multiple Choice Options */}
+          <div className="space-y-3 mb-6">
+            {question?.options.map((option, idx) => (
+              <button
+                key={idx}
+                onClick={() => handleSelectOption(idx)}
+                className={`w-full p-4 rounded-lg font-medium text-left transition-all ${
+                  currentAnswer === idx
+                    ? 'bg-blue-600 text-white border-2 border-blue-400'
+                    : 'bg-slate-700 text-slate-200 border-2 border-slate-600 hover:border-blue-500'
+                }`}
+              >
+                <span className="inline-block w-6 h-6 rounded border mr-3 text-center text-sm">
+                  {currentAnswer === idx ? '✓' : String.fromCharCode(65 + idx)}
+                </span>
+                {option}
+              </button>
+            ))}
+          </div>
+
+          {currentAnswer !== undefined && (
+            <p className="text-sm text-green-400">Answer selected ✓</p>
           )}
         </div>
 
+        {/* Navigation */}
         <div className="flex gap-4 mb-6">
           <button 
             onClick={handlePrevious}
@@ -168,7 +199,7 @@ export default function PlayPage() {
                 : 'bg-slate-700 text-white hover:bg-slate-600'
             }`}
           >
-            Previous
+            ← Previous
           </button>
           <button 
             onClick={handleNext}
@@ -179,16 +210,17 @@ export default function PlayPage() {
                 : 'bg-slate-700 text-white hover:bg-slate-600'
             }`}
           >
-            Next
+            Next →
           </button>
         </div>
 
+        {/* Submit */}
         <button 
           onClick={handleSubmit} 
           disabled={submitting}
-          className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-4 rounded-lg transition disabled:opacity-50 disabled:cursor-not-allowed"
+          className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-4 rounded-lg transition disabled:opacity-50"
         >
-          {submitting ? 'Submitting...' : 'Submit Answers'}
+          {submitting ? '⏳ Submitting...' : '🎮 Submit Answers'}
         </button>
       </div>
     </div>
