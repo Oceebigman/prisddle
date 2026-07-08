@@ -75,12 +75,14 @@ export default function PlayPage() {
     setSubmitting(true);
     
     try {
-      // Convert option indices to answer text
+      // Convert option indices to answer text - using number keys correctly
       const submittedAnswers: Record<number, string> = {};
-      Object.entries(answers).forEach(([qNum, optionIdx]) => {
-        const q = questions.find(qu => qu.question_number === parseInt(qNum));
-        if (q && optionIdx !== undefined) {
-          submittedAnswers[qNum] = q.options[optionIdx as number];
+      
+      Object.entries(answers).forEach(([qNumStr, optionIdx]) => {
+        const qNum = parseInt(qNumStr);
+        const q = questions.find(qu => qu.question_number === qNum);
+        if (q && optionIdx !== undefined && typeof optionIdx === 'number') {
+          submittedAnswers[qNum] = q.options[optionIdx];
         }
       });
 
