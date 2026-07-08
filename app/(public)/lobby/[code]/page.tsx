@@ -3,7 +3,6 @@
 import { useEffect, useState } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Countdown from '../../components/Countdown';
-import Link from 'next/link';
 
 interface RoomStatus {
   status: string;
@@ -21,7 +20,6 @@ export default function LobbyPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const jitter = Math.random() * 2000;
     const pollStatus = setInterval(async () => {
       try {
         const res = await fetch(`/api/rooms/${code}/status`);
@@ -36,45 +34,32 @@ export default function LobbyPage() {
       } catch (error) {
         console.error('Polling error:', error);
       }
-    }, 3000 + jitter);
+    }, 3000);
 
     return () => clearInterval(pollStatus);
   }, [code, router]);
 
   if (loading) {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center px-4 py-12">
-        <div className="container max-w-md text-center">
-          <p className="text-lg text-slate-300">Loading room...</p>
-        </div>
+      <div className="min-h-screen bg-gradient-to-b from-slate-900 to-slate-800 flex items-center justify-center p-4">
+        <p className="text-white">Loading room...</p>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center px-4 py-12">
-      <div className="container max-w-md">
-        <Link href="/" className="text-blue-400 hover:text-blue-300 text-sm font-bold mb-8 inline-flex items-center gap-2">
-          ← Back
-        </Link>
-
-        <div className="card text-center mb-6">
-          <h1 className="text-2xl font-black mb-2">{status?.room_name}</h1>
-          <p className="text-slate-400">Game Code: <span className="font-mono font-bold text-blue-400">{code}</span></p>
+    <div className="min-h-screen bg-gradient-to-b from-slate-900 to-slate-800 flex items-center justify-center p-4">
+      <div className="max-w-md w-full text-center">
+        <h1 className="text-3xl font-bold text-white mb-4">{status?.room_name}</h1>
+        <p className="text-slate-400 mb-8">Code: <span className="font-mono font-bold text-blue-400">{code}</span></p>
+        <div className="bg-slate-800 rounded-lg p-8 mb-8">
+          <p className="text-slate-300 mb-4">Players joined</p>
+          <p className="text-4xl font-bold text-white">{status?.player_count}</p>
         </div>
-
-        <div className="card text-center mb-6">
-          <p className="text-sm text-slate-400 mb-2">Players Joined</p>
-          <p className="text-4xl font-black text-blue-400">{status?.player_count}</p>
-        </div>
-
         {status?.starts_at && (
-          <div className="mb-6">
-            <Countdown startsAt={status.starts_at} endsAt={status.ends_at} onFinish={() => router.push(`/play/${code}`)} />
-          </div>
+          <Countdown startsAt={status.starts_at} endsAt={status.ends_at} onFinish={() => router.push(`/play/${code}`)} />
         )}
-
-        <p className="text-center text-slate-400 text-sm">Waiting for the game to start...</p>
+        <p className="text-slate-400 mt-8 text-sm">Waiting for host to start...</p>
       </div>
     </div>
   );

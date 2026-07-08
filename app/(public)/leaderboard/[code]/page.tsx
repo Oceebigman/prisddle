@@ -8,13 +8,11 @@ interface LeaderboardEntry {
   username: string;
   score: number;
   accuracy: number;
-  rank?: number;
 }
 
 export default function LeaderboardPage() {
   const params = useParams();
   const code = params.code as string;
-  const router = useRouter();
   
   const [entries, setEntries] = useState<LeaderboardEntry[]>([]);
   const [loading, setLoading] = useState(true);
@@ -36,36 +34,21 @@ export default function LeaderboardPage() {
     loadLeaderboard();
   }, [code]);
 
-  if (loading) return (
-    <div className="min-h-screen flex flex-col items-center justify-center px-4 py-12">
-      <div className="container max-w-md text-center">
-        <p className="text-lg text-slate-300">Loading results...</p>
-      </div>
-    </div>
-  );
+  if (loading) return <div className="min-h-screen bg-slate-900 flex items-center justify-center"><p className="text-white">Loading results...</p></div>;
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center px-4 py-12">
-      <div className="container max-w-md">
-        <h1 className="text-3xl font-black text-center mb-8">🏆 Leaderboard</h1>
-
-        <div className="space-y-2 mb-8">
+    <div className="min-h-screen bg-gradient-to-b from-slate-900 to-slate-800 p-4">
+      <div className="max-w-2xl mx-auto">
+        <h1 className="text-4xl font-bold text-white mb-8 text-center">Results</h1>
+        <div className="space-y-3 mb-8">
           {entries.map((entry, index) => (
-            <div key={index} className="card flex justify-between items-center">
-              <div>
-                <p className="font-bold text-white">#{index + 1} {entry.username}</p>
-                <p className="text-sm text-slate-400">{entry.accuracy}% accuracy</p>
-              </div>
-              <p className="text-2xl font-black text-blue-400">{entry.score}</p>
+            <div key={index} className="bg-slate-800 rounded-lg p-4 flex justify-between">
+              <div><p className="text-white font-bold">{index + 1}. {entry.username}</p><p className="text-slate-400 text-sm">{entry.accuracy}% accuracy</p></div>
+              <p className="text-2xl font-bold text-blue-400">{entry.score}</p>
             </div>
           ))}
         </div>
-
-        <Link href="/" className="block">
-          <button className="w-full btn-secondary">
-            ← Back to Home
-          </button>
-        </Link>
+        <Link href="/" className="w-full block text-center bg-blue-600 text-white font-bold py-3 rounded-lg">Back to Home</Link>
       </div>
     </div>
   );

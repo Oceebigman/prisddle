@@ -27,33 +27,25 @@ export default function JoinPage() {
       });
 
       if (!res.ok) {
-        const data = await res.json();
-        throw new Error(data.error || 'Failed to join');
+        throw new Error('Failed to join');
       }
 
       const data = await res.json();
       localStorage.setItem('session_token', data.session_token);
-      localStorage.setItem('player_id', data.player_id);
-      
       router.push(`/lobby/${roomCode.toUpperCase()}`);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Join failed');
+      setError('Invalid room code or username');
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center px-4 py-12">
-      <div className="container max-w-md">
-        <Link href="/" className="text-blue-400 hover:text-blue-300 text-sm font-bold mb-8 inline-flex items-center gap-2">
-          ← Back
-        </Link>
+    <div className="min-h-screen bg-gradient-to-b from-slate-900 to-slate-800 flex items-center justify-center p-4">
+      <div className="max-w-md w-full">
+        <Link href="/" className="text-blue-400 hover:text-blue-300 text-sm font-bold mb-8">← Back</Link>
 
-        <div className="text-center mb-8">
-          <h1 className="text-2xl font-black mb-2">Join Game</h1>
-          <p className="text-slate-400">Enter the game code to join</p>
-        </div>
+        <h1 className="text-3xl font-bold text-white mb-4 text-center">Join Game</h1>
 
         <form onSubmit={handleJoin} className="space-y-4">
           <div>
@@ -79,10 +71,10 @@ export default function JoinPage() {
             />
           </div>
 
-          {error && <p className="text-red-400 text-sm font-bold">{error}</p>}
+          {error && <p className="text-red-400 text-sm">{error}</p>}
 
-          <button type="submit" disabled={loading || !roomCode || !username} className="w-full btn-primary">
-            {loading ? '⏳ Joining...' : '🎮 Join Game'}
+          <button type="submit" disabled={loading} className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg transition">
+            {loading ? 'Joining...' : 'Join Game'}
           </button>
         </form>
       </div>
