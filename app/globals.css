@@ -19,7 +19,8 @@ button:hover {
 }
 
 input, textarea, select {
-  @apply w-full px-4 py-3 bg-slate-700/80 border border-slate-600 rounded text-white text-base font-inherit;
+  @apply w-full px-4 py-3 bg-slate-700/80 border border-slate-600 rounded text-white text-base;
+  font-family: inherit;
 }
 
 input:focus, textarea:focus, select:focus {
@@ -90,6 +91,10 @@ input::placeholder {
   @apply p-4;
 }
 
+.p-8 {
+  @apply p-8;
+}
+
 .mb-4 {
   @apply mb-4;
 }
@@ -108,4 +113,16 @@ input::placeholder {
 
 .gap-4 {
   @apply gap-4;
+}
+
+.min-h-screen {
+  @apply min-h-screen;
+}
+
+.max-w-2xl {
+  @apply max-w-2xl;
+}
+
+.mx-auto {
+  @apply mx-auto;
 }
