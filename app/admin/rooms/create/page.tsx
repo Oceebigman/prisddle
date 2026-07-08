@@ -86,11 +86,11 @@ export default function CreateRoomPage() {
           </div>
         ) : (
           <>
-            <Link href="/admin/dashboard" className="text-blue-400 hover:text-blue-300 text-sm font-medium mb-2">
+            <Link href="/admin/dashboard" className="text-blue-400 hover:text-blue-300 text-sm font-medium">
               ← Back to Dashboard
             </Link>
 
-            <h1 className="text-3xl font-bold text-white text-center">Create New Room</h1>
+            <h1 className="text-3xl font-bold text-white text-center mb-2">Create New Room</h1>
 
             <form onSubmit={handleCreate} className="space-y-5">
               <div>

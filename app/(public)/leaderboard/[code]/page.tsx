@@ -1,54 +1,211 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useParams, useRouter } from 'next/navigation';
+import { useParams } from 'next/navigation';
 import Link from 'next/link';
 
 interface LeaderboardEntry {
   username: string;
   score: number;
-  accuracy: number;
+  correct_count: number;
+  total_questions: number;
+  time_used_seconds: number;
+  rank: number;
 }
 
 export default function LeaderboardPage() {
   const params = useParams();
   const code = params.code as string;
-  
+
   const [entries, setEntries] = useState<LeaderboardEntry[]>([]);
+  const [roomName, setRoomName] = useState('');
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+  const [currentPlayer, setCurrentPlayer] = useState('');
 
   useEffect(() => {
     const loadLeaderboard = async () => {
       const sessionToken = localStorage.getItem('session_token');
+      
       try {
-        const res = await fetch(`/api/rooms/${code}/leaderboard?session_token=${sessionToken}`);
-        if (res.ok) {
-          const data = await res.json();
-          setEntries(data);
-          setLoading(false);
+        // Get room status first
+        const statusRes = await fetch(`/api/rooms/${code}/status`);
+        if (!statusRes.ok) {
+          throw new Error('Failed to fetch room status');
         }
-      } catch (error) {
-        console.error('Leaderboard error:', error);
+        const statusData = await statusRes.json();
+        setRoomName(statusData.room_name);
+
+        // Get leaderboard
+        const res = await fetch(`/api/rooms/${code}/leaderboard?session_token=${sessionToken}`);
+        
+        if (!res.ok) {
+          if (res.status === 404) {
+            throw new Error('Leaderboard not found');
+          }
+          throw new Error('Failed to load leaderboard');
+        }
+
+        const data = await res.json();
+        
+        if (!data || data.length === 0) {
+          setEntries([]);
+          setLoading(false);
+          return;
+        }
+
+        // Sort by score descending, then time ascending
+        const sorted = data.sort((a: any, b: any) => {
+          if (b.score !== a.score) return b.score - a.score;
+          return a.time_used_seconds - b.time_used_seconds;
+        });
+
+        // Add ranks
+        const withRanks = sorted.map((entry: any, idx: number) => ({
+          ...entry,
+          rank: idx + 1,
+        }));
+
+        setEntries(withRanks);
+        setLoading(false);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Failed to load results');
+        setLoading(false);
       }
     };
+
     loadLeaderboard();
   }, [code]);
 
-  if (loading) return <div className="min-h-screen bg-slate-900 flex items-center justify-center"><p className="text-white">Loading results...</p></div>;
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-gradient-to-b from-slate-900 to-slate-800 flex items-center justify-center px-4">
+        <p className="text-slate-400">Loading results...</p>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="min-h-screen bg-gradient-to-b from-slate-900 to-slate-800 flex items-center justify-center px-4">
+        <div className="max-w-md w-full text-center">
+          <p className="text-red-400 mb-4">{error}</p>
+          <Link href="/">
+            <button className="inline-block px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition">
+              Back to Home
+            </button>
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
+  if (entries.length === 0) {
+    return (
+      <div className="min-h-screen bg-gradient-to-b from-slate-900 to-slate-800 flex items-center justify-center px-4">
+        <div className="max-w-md w-full text-center">
+          <p className="text-slate-400 mb-4">No submissions this round</p>
+          <Link href="/">
+            <button className="inline-block px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition">
+              Back to Home
+            </button>
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
+  // Top 3 podium
+  const podium = entries.slice(0, 3);
+  const rest = entries.slice(3);
+
+  const formatTime = (seconds: number) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins}:${secs.toString().padStart(2, '0')}`;
+  };
+
+  const getPodiumColor = (rank: number) => {
+    switch (rank) {
+      case 1:
+        return 'border-yellow-500/50 bg-yellow-900/10';
+      case 2:
+        return 'border-gray-400/50 bg-gray-900/10';
+      case 3:
+        return 'border-orange-500/50 bg-orange-900/10';
+      default:
+        return '';
+    }
+  };
+
+  const getPodiumEmoji = (rank: number) => {
+    switch (rank) {
+      case 1:
+        return '🥇';
+      case 2:
+        return '🥈';
+      case 3:
+        return '🥉';
+      default:
+        return '';
+    }
+  };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-900 to-slate-800 p-4">
-      <div className="max-w-2xl mx-auto">
-        <h1 className="text-4xl font-bold text-white mb-8 text-center">Results</h1>
-        <div className="space-y-3 mb-8">
-          {entries.map((entry, index) => (
-            <div key={index} className="bg-slate-800 rounded-lg p-4 flex justify-between">
-              <div><p className="text-white font-bold">{index + 1}. {entry.username}</p><p className="text-slate-400 text-sm">{entry.accuracy}% accuracy</p></div>
-              <p className="text-2xl font-bold text-blue-400">{entry.score}</p>
+    <div className="min-h-screen bg-gradient-to-b from-slate-900 to-slate-800 px-4 py-12">
+      <div className="max-w-2xl mx-auto flex flex-col gap-6">
+        {/* Title */}
+        <div className="text-center">
+          <h1 className="text-3xl font-bold text-white mb-2">{roomName}</h1>
+          <h2 className="text-2xl font-bold text-slate-300">Final Results</h2>
+        </div>
+
+        {/* Podium - Top 3 */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          {podium.map((entry) => (
+            <div
+              key={entry.rank}
+              className={`bg-slate-800/50 border rounded-xl p-6 text-center ${getPodiumColor(entry.rank)}`}
+            >
+              <p className="text-4xl mb-2">{getPodiumEmoji(entry.rank)}</p>
+              <p className="text-xl font-bold text-white">{entry.username}</p>
+              <p className="text-sm text-slate-400 mt-2">{entry.correct_count}/{entry.total_questions} correct</p>
+              <p className="text-2xl font-bold text-blue-400 mt-2">{entry.score} pts</p>
+              <p className="text-xs text-slate-400 mt-1">{formatTime(entry.time_used_seconds)}</p>
             </div>
           ))}
         </div>
-        <Link href="/" className="w-full block text-center bg-blue-600 text-white font-bold py-3 rounded-lg">Back to Home</Link>
+
+        {/* Remaining Entries - Table */}
+        {rest.length > 0 && (
+          <div className="space-y-2">
+            {rest.map((entry) => (
+              <div
+                key={entry.rank}
+                className="bg-slate-800/50 border border-slate-700 rounded-xl p-4 flex justify-between items-center"
+              >
+                <div className="flex-1">
+                  <p className="font-bold text-white">
+                    #{entry.rank} {entry.username}
+                  </p>
+                  <p className="text-sm text-slate-400">
+                    {entry.correct_count}/{entry.total_questions} correct • {formatTime(entry.time_used_seconds)}
+                  </p>
+                </div>
+                <p className="text-2xl font-bold text-blue-400">{entry.score}</p>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {/* Back Button */}
+        <div className="text-center">
+          <Link href="/">
+            <button className="inline-block px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition">
+              Back to Home
+            </button>
+          </Link>
+        </div>
       </div>
     </div>
   );

@@ -14,6 +14,8 @@ export default function Landing() {
             Join a Game
           </button>
         </Link>
+
+        <p className="text-slate-500 text-sm mt-6">Have a game code? Ask your host.</p>
       </div>
     </div>
   );
