@@ -81,7 +81,6 @@ export default function PlayPage() {
       if (res.ok) {
         setSubmitted(true);
         localStorage.removeItem('session_token');
-        // Redirect after 1.5 seconds
         setTimeout(() => {
           router.push(`/leaderboard/${code}`);
         }, 1500);
@@ -131,7 +130,6 @@ export default function PlayPage() {
           />
         )}
 
-        {/* Progress */}
         <div className="bg-slate-800 rounded-lg p-4 mb-6">
           <div className="flex justify-between items-center mb-3">
             <span className="text-slate-400">Question {currentQuestion} of {questions.length}</span>
@@ -145,7 +143,6 @@ export default function PlayPage() {
           </div>
         </div>
 
-        {/* Question Card */}
         <div className="bg-slate-800 rounded-lg p-8 mb-6">
           <h2 className="text-2xl font-bold text-white mb-6">{question?.riddle_text}</h2>
           <input 
@@ -161,7 +158,6 @@ export default function PlayPage() {
           )}
         </div>
 
-        {/* Navigation */}
         <div className="flex gap-4 mb-6">
           <button 
             onClick={handlePrevious}
@@ -172,7 +168,7 @@ export default function PlayPage() {
                 : 'bg-slate-700 text-white hover:bg-slate-600'
             }`}
           >
-            ← Previous
+            Previous
           </button>
           <button 
             onClick={handleNext}
@@ -183,17 +179,16 @@ export default function PlayPage() {
                 : 'bg-slate-700 text-white hover:bg-slate-600'
             }`}
           >
-            Next →
+            Next
           </button>
         </div>
 
-        {/* Submit */}
         <button 
           onClick={handleSubmit} 
           disabled={submitting}
           className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-4 rounded-lg transition disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          {submitting ? '⏳ Submitting...' : '🎮 Submit Answers'}
+          {submitting ? 'Submitting...' : 'Submit Answers'}
         </button>
       </div>
     </div>
