@@ -57,6 +57,7 @@ export default function JoinPage() {
               onChange={(e) => setRoomCode(e.target.value.toUpperCase())}
               disabled={loading}
               maxLength={6}
+              className="w-full"
             />
           </div>
 
@@ -68,12 +69,13 @@ export default function JoinPage() {
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               disabled={loading}
+              className="w-full"
             />
           </div>
 
-          {error && <p className="text-red-400 text-sm">{error}</p>}
+          {error && <p className="text-red-400 text-sm font-bold">{error}</p>}
 
-          <button type="submit" disabled={loading} className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg transition">
+          <button type="submit" disabled={loading} className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg transition disabled:opacity-50">
             {loading ? 'Joining...' : 'Join Game'}
           </button>
         </form>

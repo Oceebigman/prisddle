@@ -27,7 +27,7 @@ export default function CreateRoomPage() {
 
     try {
       const puzzleId = '7b86a0c6-3261-4d41-80fb-04d16d29393d';
-      
+
       const res = await fetch('/api/admin/rooms', {
         method: 'POST',
         headers: {
@@ -54,58 +54,67 @@ export default function CreateRoomPage() {
   if (!isAdmin) return null;
 
   return (
-    <div className="min-h-screen bg-slate-900 text-white">
-      <nav className="bg-slate-800 p-4">
-        <Link href="/admin/dashboard" className="text-blue-400 hover:text-blue-300">
-          ← Back to Dashboard
-        </Link>
+    <div className="min-h-screen bg-gradient-to-b from-slate-900 to-slate-800">
+      <nav className="bg-slate-800 p-4 border-b border-slate-700">
+        <div className="max-w-2xl mx-auto">
+          <Link href="/admin/dashboard" className="text-blue-400 hover:text-blue-300 font-bold">
+            ← Back to Dashboard
+          </Link>
+        </div>
       </nav>
 
-      <div className="max-w-md mx-auto p-8 mt-8">
+      <div className="max-w-md mx-auto p-6 mt-8">
         {created ? (
-          <div className="bg-green-900 border border-green-600 rounded-lg p-6 text-center">
-            <h2 className="text-2xl font-bold mb-4">✓ Room Created!</h2>
-            <p className="mb-4">Game Code: <span className="font-mono font-bold text-green-300 text-xl">{created.room_code}</span></p>
+          <div className="bg-green-900/30 border border-green-600/50 rounded-xl p-6 text-center">
+            <h2 className="text-2xl font-bold text-white mb-4">✓ Room Created!</h2>
+            <p className="mb-4">
+              Game Code: <span className="font-mono font-bold text-green-300 text-xl">{created.room_code}</span>
+            </p>
             <p className="text-sm text-slate-300 mb-6">Share this code with players to join</p>
-            <Link
-              href={`/admin/rooms/${created.id}`}
-              className="bg-green-600 hover:bg-green-700 px-6 py-2 rounded-lg transition inline-block"
-            >
-              Go to Room Control
+            <Link href={`/admin/rooms/${created.id}`}>
+              <button className="inline-block mt-2 px-6 py-2 bg-white/10 hover:bg-white/20 text-white font-bold rounded-lg transition">
+                Go to Room Control
+              </button>
             </Link>
           </div>
         ) : (
           <form onSubmit={handleCreate} className="space-y-4">
-            <h1 className="text-3xl font-bold text-center mb-8">Create New Room</h1>
+            <h1 className="text-3xl font-bold text-center text-white mb-8">Create New Room</h1>
 
-            <input
-              type="text"
-              placeholder="Room Name"
-              value={roomName}
-              onChange={(e) => setRoomName(e.target.value)}
-              className="w-full px-4 py-2 bg-slate-700 text-white placeholder-slate-400 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-              required
-              disabled={loading}
-            />
+            <div>
+              <label className="block text-sm font-bold text-slate-300 mb-2">Room Name</label>
+              <input
+                type="text"
+                placeholder="Room Name"
+                value={roomName}
+                onChange={(e) => setRoomName(e.target.value)}
+                disabled={loading}
+                className="w-full"
+                required
+              />
+            </div>
 
-            <select
-              value={duration}
-              onChange={(e) => setDuration(e.target.value)}
-              className="w-full px-4 py-2 bg-slate-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-              disabled={loading}
-            >
-              <option value="300">5 minutes</option>
-              <option value="600">10 minutes</option>
-              <option value="1200">20 minutes (default)</option>
-              <option value="1800">30 minutes</option>
-            </select>
+            <div>
+              <label className="block text-sm font-bold text-slate-300 mb-2">Duration</label>
+              <select
+                value={duration}
+                onChange={(e) => setDuration(e.target.value)}
+                disabled={loading}
+                className="w-full"
+              >
+                <option value="300">5 minutes</option>
+                <option value="600">10 minutes</option>
+                <option value="1200">20 minutes (default)</option>
+                <option value="1800">30 minutes</option>
+              </select>
+            </div>
 
-            {error && <p className="text-red-400 text-sm">{error}</p>}
+            {error && <p className="text-red-400 text-sm font-bold">{error}</p>}
 
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-blue-600 hover:bg-blue-700 disabled:bg-slate-600 text-white font-bold py-2 px-4 rounded-lg transition"
+              className="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg transition disabled:opacity-50"
             >
               {loading ? 'Creating...' : 'Create Room'}
             </button>
