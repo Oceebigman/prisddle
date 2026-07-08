@@ -17,25 +17,27 @@ export default function RoomControlPage() {
   const [roomCode, setRoomCode] = useState('');
 
   useEffect(() => {
-    // Fetch room code and initial player count
+    // Fetch room info and poll player count
     const fetchRoom = async () => {
       try {
-        const res = await fetch(`/api/rooms/${roomCode}/status`);
+        // Get room code from admin API or derive from params
+        const res = await fetch(`/api/admin/rooms/${id}/submissions`, {
+          headers: { 'x-admin-key': adminKey! },
+        });
         if (res.ok) {
           const data = await res.json();
-          setPlayerCount(data.player_count);
-          setRoomCode(data.room_code || roomCode);
+          setPlayerCount(data.length || 0);
         }
       } catch (err) {
         console.error('Failed to fetch room:', err);
       }
     };
 
-    // Poll player count
+    // Poll every 3 seconds
     const interval = setInterval(fetchRoom, 3000);
     fetchRoom();
     return () => clearInterval(interval);
-  }, [roomCode]);
+  }, [id, adminKey]);
 
   const handleStart = async () => {
     setLoading(true);
@@ -68,6 +70,7 @@ export default function RoomControlPage() {
 
       if (!res.ok) throw new Error('Failed to end game');
       alert('Game ended!');
+      setStarted(false);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'End failed');
     } finally {
@@ -77,31 +80,37 @@ export default function RoomControlPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-900 to-slate-800">
-      <AdminHeader backTo="/admin/dashboard" title="Room Control" />
+      <AdminHeader />
 
-      <main className="max-w-2xl mx-auto px-6 py-10 space-y-6">
+      <main className="max-w-2xl mx-auto px-6 py-10 flex flex-col gap-6">
+        {/* Back Link */}
+        <Link href="/admin/dashboard" className="text-blue-400 hover:text-blue-300 text-sm font-medium">
+          ← Back to Dashboard
+        </Link>
+
+        {/* Page Title */}
         <h1 className="text-3xl font-bold text-white">Room Control</h1>
 
         {/* Status Card */}
         {started ? (
-          <div className="bg-green-900/20 border border-green-700 rounded-xl text-center p-8 space-y-4">
+          <div className="bg-green-900/20 border border-green-700 rounded-xl p-8 text-center flex flex-col items-center gap-4">
             <h2 className="text-2xl font-bold text-white">✓ Game Started!</h2>
             <p className="text-green-200">Players are now solving riddles</p>
             <button
               onClick={handleEnd}
               disabled={loading}
-              className="px-8 py-3 mx-auto block bg-red-600 hover:bg-red-700 text-white font-semibold rounded-lg transition-colors disabled:opacity-50"
+              className="px-8 py-3 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-lg transition-colors disabled:opacity-50"
             >
               {loading ? 'Ending...' : 'End Game'}
             </button>
           </div>
         ) : (
-          <div className="bg-slate-800/50 border border-slate-700 rounded-xl text-center p-8 space-y-4">
+          <div className="bg-slate-800/50 border border-slate-700 rounded-xl p-8 text-center flex flex-col items-center gap-4">
             <h2 className="text-2xl font-bold text-white">Ready to Start?</h2>
             <p className="text-slate-400">Players can join before you start</p>
-            
-            {/* Live Player Count */}
-            <div className="py-4 bg-slate-900/50 rounded-lg">
+
+            {/* Live Player Count Box */}
+            <div className="max-w-xs mx-auto rounded-lg bg-slate-900/50 border border-slate-700 px-8 py-4 my-2">
               <p className="text-slate-400 text-sm mb-1">Players Joined</p>
               <p className="text-3xl font-bold text-blue-400">{playerCount}</p>
             </div>
@@ -111,7 +120,7 @@ export default function RoomControlPage() {
             <button
               onClick={handleStart}
               disabled={loading}
-              className="px-8 py-3 mx-auto block bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition-colors text-lg disabled:opacity-50"
+              className="px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition-colors text-lg disabled:opacity-50"
             >
               {loading ? 'Starting...' : 'Start Game'}
             </button>
@@ -125,7 +134,9 @@ export default function RoomControlPage() {
             Room ID: <span className="font-mono text-blue-400 break-all">{id}</span>
           </p>
           <p className="text-slate-400 text-sm">
-            {started ? 'Game in progress — players have 20 minutes' : 'Once started, players will have 20 minutes to solve 5 riddles'}
+            {started 
+              ? 'Game in progress — players have 20 minutes to solve 5 riddles'
+              : 'Once started, players will have 20 minutes to solve 5 riddles'}
           </p>
         </div>
       </main>

@@ -65,12 +65,12 @@ export default function CreateRoomPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-900 to-slate-800">
-      <AdminHeader backTo="/admin/dashboard" title="Create Room" />
+      <AdminHeader />
 
-      <main className="max-w-md mx-auto px-6 py-10">
+      <main className="max-w-md mx-auto px-6 py-10 flex flex-col gap-6">
         {created ? (
           <div className="bg-green-900/20 border border-green-700 rounded-xl text-center p-8 space-y-4">
-            <h2 className="text-2xl font-bold text-white">✓ Room Created!</h2>
+            <h1 className="text-2xl font-bold text-white">✓ Room Created!</h1>
             <button
               onClick={copyCode}
               className="inline-block px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-mono font-bold rounded-lg transition-colors"
@@ -86,13 +86,11 @@ export default function CreateRoomPage() {
           </div>
         ) : (
           <>
-            <div className="mb-8">
-              <Link href="/admin/dashboard" className="text-blue-400 hover:text-blue-300 text-sm font-medium">
-                ← Back to Dashboard
-              </Link>
-            </div>
+            <Link href="/admin/dashboard" className="text-blue-400 hover:text-blue-300 text-sm font-medium mb-2">
+              ← Back to Dashboard
+            </Link>
 
-            <h1 className="text-3xl font-bold text-white text-center mb-8">Create New Room</h1>
+            <h1 className="text-3xl font-bold text-white text-center">Create New Room</h1>
 
             <form onSubmit={handleCreate} className="space-y-5">
               <div>

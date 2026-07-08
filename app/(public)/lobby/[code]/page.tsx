@@ -44,37 +44,40 @@ export default function LobbyPage() {
   if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-b from-slate-900 to-slate-800 flex items-center justify-center px-4">
-        <div className="max-w-md w-full text-center">
-          <p className="text-slate-400">Loading room...</p>
-        </div>
+        <p className="text-slate-400">Loading room...</p>
       </div>
     );
   }
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-slate-900 to-slate-800 flex items-center justify-center px-4">
-      <div className="max-w-md w-full space-y-6">
-        <Link href="/" className="text-blue-400 hover:text-blue-300 text-sm font-medium">
+      <div className="max-w-md mx-auto px-6 py-16 flex flex-col gap-6 text-center w-full">
+        {/* Back Link - First in Normal Flow */}
+        <Link href="/" className="text-blue-400 hover:text-blue-300 text-sm font-medium self-start">
           ← Back
         </Link>
 
-        <div className="bg-slate-800/50 border border-slate-700 rounded-xl p-6 text-center">
-          <h1 className="text-4xl font-bold text-white mb-2">{status?.room_name}</h1>
-          <p className="text-slate-400">
+        {/* Room Info Card */}
+        <div className="bg-slate-800/50 border border-slate-700 rounded-xl p-8">
+          <h1 className="text-4xl font-bold text-white">{status?.room_name}</h1>
+          <p className="text-slate-400 mt-2">
             Code: <span className="font-mono text-blue-400">{code}</span>
           </p>
         </div>
 
-        <div className="bg-slate-800/50 border border-slate-700 rounded-xl p-6 text-center">
-          <p className="text-slate-400 text-sm mb-2">Players Joined</p>
-          <p className="text-4xl font-bold text-white">{status?.player_count}</p>
+        {/* Players Card */}
+        <div className="bg-slate-800/50 border border-slate-700 rounded-xl p-8">
+          <p className="text-slate-400">Players Joined</p>
+          <p className="text-5xl font-bold text-white mt-2">{status?.player_count}</p>
         </div>
 
+        {/* Countdown */}
         {status?.starts_at && (
           <Countdown startsAt={status.starts_at} endsAt={status.ends_at} onFinish={() => router.push(`/play/${code}`)} />
         )}
 
-        <p className="text-center text-slate-400 text-sm animate-pulse">
+        {/* Waiting Text - Outside Cards with Clear Gap */}
+        <p className="text-slate-400 text-sm animate-pulse mt-2">
           Waiting for host to start...
         </p>
       </div>

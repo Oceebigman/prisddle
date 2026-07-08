@@ -61,6 +61,7 @@ export default function JoinPage() {
               maxLength={6}
               autoComplete="off"
               autoCapitalize="characters"
+              spellCheck="false"
               className="w-full px-4 py-3 bg-slate-900/50 border border-slate-600 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
             />
           </div>
@@ -73,6 +74,7 @@ export default function JoinPage() {
               value={username}
               onChange={(e) => setUsername(e.target.value)}
               disabled={loading}
+              spellCheck="false"
               className="w-full px-4 py-3 bg-slate-900/50 border border-slate-600 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
             />
           </div>
