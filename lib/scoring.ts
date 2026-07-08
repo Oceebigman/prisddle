@@ -2,17 +2,14 @@ export interface RiddleQuestion {
   id: string;
   question_number: number;
   riddle_text: string;
-  correct_answer: string;
+  options: string[];
+  correct_index: number;
   points: number;
-}
-
-function normalizeAnswer(s: string): string {
-  return s.trim().toUpperCase().replace(/\s+/g, ' ');
 }
 
 export function scoreRiddleSubmission(
   questions: RiddleQuestion[],
-  submitted: Record<string, string>
+  submitted: Record<string, number>
 ): {
   score: number;
   correct_count: number;
@@ -22,13 +19,13 @@ export function scoreRiddleSubmission(
   let correct_count = 0;
 
   for (const question of questions) {
-    const submittedAnswer = submitted[question.question_number.toString()];
-    if (!submittedAnswer) continue;
+    const submittedIndex = submitted[question.question_number.toString()];
+    
+    // If no answer submitted for this question, skip
+    if (submittedIndex === undefined) continue;
 
-    const normalized_submitted = normalizeAnswer(submittedAnswer);
-    const normalized_correct = normalizeAnswer(question.correct_answer);
-
-    if (normalized_submitted === normalized_correct) {
+    // Compare submitted index against correct index
+    if (submittedIndex === question.correct_index) {
       score += question.points;
       correct_count++;
     }

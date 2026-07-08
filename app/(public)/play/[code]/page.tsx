@@ -8,7 +8,6 @@ interface Question {
   question_number: number;
   riddle_text: string;
   options: string[];
-  correct_index: number;
 }
 
 export default function PlayPage() {
@@ -22,30 +21,53 @@ export default function PlayPage() {
   const [currentQuestion, setCurrentQuestion] = useState(1);
   const [submitted, setSubmitted] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
     const loadQuestions = async () => {
       const sessionToken = localStorage.getItem('session_token');
+      
+      // No session token → redirect to join
       if (!sessionToken) {
-        router.push('/join');
+        router.push(`/join?code=${code}`);
         return;
       }
 
       try {
         const statusRes = await fetch(`/api/rooms/${code}/status`);
-        const status = await statusRes.json();
-        setRoomStatus(status);
-
-        const puzzleId = status.puzzle_id || '7b86a0c6-3261-4d41-80fb-04d16d29393d';
-        const res = await fetch(`/api/puzzles/${puzzleId}/play?session_token=${sessionToken}`);
-        if (res.ok) {
-          const data = await res.json();
-          setQuestions(data);
-          setLoading(false);
+        if (statusRes.ok) {
+          const status = await statusRes.json();
+          setRoomStatus(status);
         }
+
+        const puzzleId = '7b86a0c6-3261-4d41-80fb-04d16d29393d';
+        const res = await fetch(`/api/puzzles/${puzzleId}/play?session_token=${sessionToken}`);
+        
+        // Validate response is OK and is an array
+        if (!res.ok) {
+          if (res.status === 401) {
+            setError('Session expired. Please join again.');
+            setTimeout(() => router.push(`/join?code=${code}`), 2000);
+          } else {
+            setError('Failed to load questions. Please try again.');
+          }
+          return;
+        }
+
+        const data = await res.json();
+        
+        // Validate data is an array
+        if (!Array.isArray(data)) {
+          setError('Invalid response from server. Please refresh.');
+          return;
+        }
+
+        setQuestions(data);
+        setLoading(false);
       } catch (error) {
         console.error('Load error:', error);
+        setError('Connection error. Please refresh.');
       }
     };
 
@@ -75,14 +97,11 @@ export default function PlayPage() {
     setSubmitting(true);
     
     try {
-      // Convert option indices to answer text - using number keys correctly
-      const submittedAnswers: Record<number, string> = {};
-      
+      // Send selected indices to server
+      const submittedAnswers: Record<number, number> = {};
       Object.entries(answers).forEach(([qNumStr, optionIdx]) => {
-        const qNum = parseInt(qNumStr);
-        const q = questions.find(qu => qu.question_number === qNum);
-        if (q && optionIdx !== undefined && typeof optionIdx === 'number') {
-          submittedAnswers[qNum] = q.options[optionIdx];
+        if (optionIdx !== undefined) {
+          submittedAnswers[parseInt(qNumStr)] = optionIdx;
         }
       });
 
@@ -102,20 +121,53 @@ export default function PlayPage() {
           router.push(`/leaderboard/${code}`);
         }, 1500);
       } else {
-        alert('Failed to submit. Please try again.');
+        setError('Failed to submit. Please try again.');
       }
     } catch (error) {
       console.error('Submit error:', error);
-      alert('Error submitting answers');
+      setError('Error submitting answers');
     } finally {
       setSubmitting(false);
     }
   };
 
+  // Show error state
+  if (error && !loading) {
+    return (
+      <div className="min-h-screen bg-slate-900 flex items-center justify-center px-4">
+        <div className="max-w-md text-center">
+          <p className="text-red-400 mb-4">{error}</p>
+          <button 
+            onClick={() => router.push(`/join?code=${code}`)}
+            className="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg"
+          >
+            Back to Join
+          </button>
+        </div>
+      </div>
+    );
+  }
+
   if (loading) {
     return (
       <div className="min-h-screen bg-slate-900 flex items-center justify-center">
         <p className="text-white">Loading quiz...</p>
+      </div>
+    );
+  }
+
+  if (!questions || questions.length === 0) {
+    return (
+      <div className="min-h-screen bg-slate-900 flex items-center justify-center px-4">
+        <div className="max-w-md text-center">
+          <p className="text-slate-400 mb-4">No questions available</p>
+          <button 
+            onClick={() => router.push('/')}
+            className="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg"
+          >
+            Back to Home
+          </button>
+        </div>
       </div>
     );
   }
@@ -135,6 +187,14 @@ export default function PlayPage() {
   const question = questions.find((q) => q.question_number === currentQuestion);
   const currentAnswer = answers[currentQuestion];
   const answeredCount = Object.keys(answers).length;
+
+  if (!question) {
+    return (
+      <div className="min-h-screen bg-slate-900 flex items-center justify-center">
+        <p className="text-slate-400">Question not found</p>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-slate-900 p-4">
@@ -163,26 +223,30 @@ export default function PlayPage() {
 
         {/* Question Card */}
         <div className="bg-slate-800 rounded-lg p-8 mb-6">
-          <h2 className="text-2xl font-bold text-white mb-8">{question?.riddle_text}</h2>
+          <h2 className="text-2xl font-bold text-white mb-8">{question.riddle_text}</h2>
 
           {/* Multiple Choice Options */}
           <div className="space-y-3 mb-6">
-            {question?.options.map((option, idx) => (
-              <button
-                key={idx}
-                onClick={() => handleSelectOption(idx)}
-                className={`w-full p-4 rounded-lg font-medium text-left transition-all ${
-                  currentAnswer === idx
-                    ? 'bg-blue-600 text-white border-2 border-blue-400'
-                    : 'bg-slate-700 text-slate-200 border-2 border-slate-600 hover:border-blue-500'
-                }`}
-              >
-                <span className="inline-block w-6 h-6 rounded border mr-3 text-center text-sm">
-                  {currentAnswer === idx ? '✓' : String.fromCharCode(65 + idx)}
-                </span>
-                {option}
-              </button>
-            ))}
+            {question.options && Array.isArray(question.options) ? (
+              question.options.map((option, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => handleSelectOption(idx)}
+                  className={`w-full p-4 rounded-lg font-medium text-left transition-all ${
+                    currentAnswer === idx
+                      ? 'bg-blue-600 text-white border-2 border-blue-400'
+                      : 'bg-slate-700 text-slate-200 border-2 border-slate-600 hover:border-blue-500'
+                  }`}
+                >
+                  <span className="inline-block w-6 h-6 rounded border mr-3 text-center text-sm">
+                    {currentAnswer === idx ? '✓' : String.fromCharCode(65 + idx)}
+                  </span>
+                  {option}
+                </button>
+              ))
+            ) : (
+              <p className="text-red-400">Error: Options not available</p>
+            )}
           </div>
 
           {currentAnswer !== undefined && (

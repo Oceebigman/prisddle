@@ -20,9 +20,10 @@ export async function GET(
 
   if (!session) return NextResponse.json({ error: 'Invalid token' }, { status: 401 });
 
+  // Only send options, NOT correct_index (answer key stays on server)
   const { data: questions } = await supabase
     .from('riddle_questions')
-    .select('question_number, riddle_text, options, correct_index')
+    .select('question_number, riddle_text, options')
     .eq('puzzle_id', id)
     .order('question_number');
 
