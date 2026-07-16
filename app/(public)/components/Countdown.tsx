@@ -1,23 +1,22 @@
 'use client';
-
 import { useEffect, useState } from 'react';
-
 interface CountdownProps {
   startsAt: string;
   endsAt: string;
   onFinish: () => void;
 }
-
 export default function Countdown({ startsAt, endsAt, onFinish }: CountdownProps) {
-  const [timeRemaining, setTimeRemaining] = useState('00:00');
+  const [timeRemaining, setTimeRemaining] = useState('--:--');
   const [finished, setFinished] = useState(false);
-
   useEffect(() => {
-    const interval = setInterval(() => {
-      const now = new Date().getTime();
-      const endTime = new Date(endsAt).getTime();
+    const endTime = endsAt ? new Date(endsAt).getTime() : NaN;
+    if (!endsAt || isNaN(endTime)) {
+      setTimeRemaining('--:--');
+      return; // no valid end time yet — never finish on bad data
+    }
+    const tick = () => {
+      const now = Date.now();
       const diff = endTime - now;
-
       if (diff <= 0) {
         setTimeRemaining('00:00');
         setFinished(true);
@@ -28,11 +27,11 @@ export default function Countdown({ startsAt, endsAt, onFinish }: CountdownProps
         const seconds = Math.floor((diff % 60000) / 1000);
         setTimeRemaining(`${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`);
       }
-    }, 1000);
-
+    };
+    const interval = setInterval(tick, 1000);
+    tick();
     return () => clearInterval(interval);
   }, [endsAt, onFinish]);
-
   return (
     <div className={`text-center mb-6 p-4 rounded-lg ${finished ? 'bg-red-900' : 'bg-slate-800'}`}>
       <p className="text-slate-400 text-sm mb-2">Time Remaining</p>

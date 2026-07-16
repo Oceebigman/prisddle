@@ -120,6 +120,22 @@ export default function PlayPage() {
     return () => { supabaseBrowser.removeChannel(channel); clearInterval(poll); };
   }, [code, router]);
 
+  // Status cache (3s) can serve a pre-start snapshot right after a Realtime
+  // game-start sweep; re-fetch until ends_at exists so the timer is real.
+  useEffect(() => {
+    if (roomStatus && roomStatus.ends_at) return;
+    const t = setInterval(async () => {
+      try {
+        const res = await fetch(`/api/rooms/${code}/status`);
+        if (res.ok) {
+          const d = await res.json();
+          if (d.ends_at) setRoomStatus(d);
+        }
+      } catch {}
+    }, 2500);
+    return () => clearInterval(t);
+  }, [code, roomStatus]);
+
   const handleNext = () => {
     if (currentQuestion < questions.length) {
       setCurrentQuestion(currentQuestion + 1);
