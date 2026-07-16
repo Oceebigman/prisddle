@@ -180,7 +180,7 @@ export default function PlayPage() {
   // Show error state
   if (error && !loading) {
     return (
-      <div className="min-h-screen bg-slate-900 flex items-center justify-center px-4">
+      <div className="min-h-screen flex items-center justify-center px-4">
         <div className="max-w-md text-center">
           <p className="text-red-400 mb-4">{error}</p>
           <button 
@@ -196,7 +196,7 @@ export default function PlayPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-slate-900 flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center">
         <p className="text-white">Loading quiz...</p>
       </div>
     );
@@ -204,7 +204,7 @@ export default function PlayPage() {
 
   if (!questions || questions.length === 0) {
     return (
-      <div className="min-h-screen bg-slate-900 flex items-center justify-center px-4">
+      <div className="min-h-screen flex items-center justify-center px-4">
         <div className="max-w-md text-center">
           <p className="text-slate-400 mb-4">No questions available</p>
           <button 
@@ -220,7 +220,7 @@ export default function PlayPage() {
 
   if (submitted) {
     return (
-      <div className="min-h-screen bg-slate-900 flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <p className="text-5xl mb-4">✓</p>
           <p className="text-white text-2xl font-bold">Submitted!</p>
@@ -236,14 +236,14 @@ export default function PlayPage() {
 
   if (!question) {
     return (
-      <div className="min-h-screen bg-slate-900 flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center">
         <p className="text-slate-400">Question not found</p>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-slate-900 p-4">
+    <div className="min-h-screen p-4">
       <div className="max-w-2xl mx-auto">
         {roomStatus && (
           <Countdown 
@@ -254,21 +254,21 @@ export default function PlayPage() {
         )}
 
         {/* Progress */}
-        <div className="bg-slate-800 rounded-lg p-4 mb-6">
+        <div className="card-game p-4 mb-6">
           <div className="flex justify-between items-center mb-3">
             <span className="text-slate-400">Question {currentQuestion} of {questions.length}</span>
             <span className="text-blue-400 font-bold">{answeredCount}/{questions.length} answered</span>
           </div>
           <div className="w-full bg-slate-700 rounded-full h-2">
             <div 
-              className="bg-blue-600 h-2 rounded-full transition-all duration-300"
+              className="surface-accent h-2 rounded-full transition-all duration-300"
               style={{ width: `${(currentQuestion / questions.length) * 100}%` }}
             />
           </div>
         </div>
 
         {/* Question Card */}
-        <div className="bg-slate-800 rounded-lg p-8 mb-6">
+        <div className="card-game p-8 mb-6">
           <h2 className="text-2xl font-bold text-white mb-8">{question.riddle_text}</h2>
 
           {/* Multiple Choice Options */}
@@ -280,8 +280,8 @@ export default function PlayPage() {
                   onClick={() => handleSelectOption(idx)}
                   className={`w-full p-4 rounded-lg font-medium text-left transition-all ${
                     currentAnswer === idx
-                      ? 'bg-blue-600 text-white border-2 border-blue-400'
-                      : 'bg-slate-700 text-slate-200 border-2 border-slate-600 hover:border-blue-500'
+                      ? 'surface-accent text-white border-2 border-indigo-300/60'
+                      : 'bg-slate-800/60 text-slate-200 border-2 border-slate-600 hover:border-indigo-400 hover:bg-slate-700/60'
                   }`}
                 >
                   <span className="inline-block w-6 h-6 rounded border mr-3 text-center text-sm">
@@ -330,7 +330,7 @@ export default function PlayPage() {
         <button 
           onClick={handleSubmit} 
           disabled={submitting}
-          className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-4 rounded-lg transition disabled:opacity-50"
+          className="w-full surface-accent text-white font-bold py-4 px-4 rounded-xl transition disabled:opacity-50"
         >
           {submitting ? '⏳ Submitting...' : '🎮 Submit Answers'}
         </button>
