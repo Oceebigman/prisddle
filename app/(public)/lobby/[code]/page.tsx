@@ -61,31 +61,31 @@ export default function LobbyPage() {
   }, [code, router]);
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-slate-900 to-slate-800 flex items-center justify-center px-4">
+      <div className="min-h-screen flex items-center justify-center px-4">
         <p className="text-slate-400">Loading room...</p>
       </div>
     );
   }
   const count = players.length > 0 ? players.length : status?.player_count ?? 0;
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-900 to-slate-800 flex items-center justify-center px-4">
+    <div className="min-h-screen flex items-center justify-center px-4">
       <div className="max-w-md mx-auto w-full flex flex-col gap-6">
         <Link href="/" className="text-blue-400 hover:text-blue-300 text-sm font-medium">
           ← Back
         </Link>
-        <div className="bg-slate-800/50 border border-slate-700 rounded-xl p-8 text-center">
+        <div className="card-game rise-in p-8 text-center">
           <h1 className="text-4xl font-bold text-white">{status?.room_name}</h1>
           <p className="text-slate-400 mt-2">
             Code: <span className="font-mono text-blue-400">{code}</span>
           </p>
         </div>
-        <div className="bg-slate-800/50 border border-slate-700 rounded-xl p-8 text-center">
+        <div className="card-game rise-in p-8 text-center">
           <p className="text-slate-400">Players Joined</p>
           <p className="text-5xl font-bold text-white mt-2">{count}</p>
           {players.length > 0 && (
             <div className="flex flex-wrap justify-center gap-2 mt-4">
               {players.map((name, i) => (
-                <span key={i} className="px-3 py-1 rounded-full bg-slate-900/50 border border-slate-600 text-slate-200 text-sm">
+                <span key={i} className="px-3 py-1 rounded-full bg-slate-900/50 border border-indigo-500/30 text-slate-200 text-sm">
                   {name}
                 </span>
               ))}

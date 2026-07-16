@@ -42,7 +42,7 @@ export default function JoinPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-900 to-slate-800 flex items-center justify-center px-4">
+    <div className="min-h-screen flex items-center justify-center px-4">
       <div className="max-w-md mx-auto w-full">
         <Link href="/" className="text-blue-400 hover:text-blue-300 text-sm font-medium mb-6 inline-block">
           ← Back to Home
@@ -85,7 +85,7 @@ export default function JoinPage() {
           <button
             type="submit"
             disabled={loading || !roomCode || !username}
-            className="w-full py-3 px-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition-colors disabled:opacity-50"
+            className="w-full py-3 px-4 surface-accent text-white font-semibold rounded-lg transition-colors disabled:opacity-50"
           >
             {loading ? 'Joining...' : 'Join Game'}
           </button>
