@@ -128,11 +128,11 @@ export default function LeaderboardPage() {
   const getPodiumColor = (rank: number) => {
     switch (rank) {
       case 1:
-        return 'border-yellow-500/50 bg-yellow-900/10';
+        return 'glow-gold border-yellow-500/60 md:order-2 md:scale-105 md:-translate-y-2';
       case 2:
-        return 'border-gray-400/50 bg-gray-900/10';
+        return 'border-slate-400/40 md:order-1';
       case 3:
-        return 'border-orange-500/50 bg-orange-900/10';
+        return 'border-orange-500/40 md:order-3';
       default:
         return '';
     }
@@ -165,9 +165,12 @@ export default function LeaderboardPage() {
           {podium.map((entry) => (
             <div
               key={entry.rank}
-              className={`bg-slate-800/50 border rounded-xl p-6 text-center ${getPodiumColor(entry.rank)}`}
+              className={`card-game rise-in p-6 text-center transition-transform ${getPodiumColor(entry.rank)}`}
             >
-              <p className="text-4xl mb-2">{getPodiumEmoji(entry.rank)}</p>
+              <p className="text-3xl mb-1">{getPodiumEmoji(entry.rank)}</p>
+              <div className="flex justify-center mb-3">
+                <span className="avatar-circle w-14 h-14 text-xl">{entry.username.charAt(0).toUpperCase()}</span>
+              </div>
               <p className="text-xl font-bold text-white">{entry.username}</p>
               <p className="text-sm text-slate-400 mt-2">{entry.correct_count}/{entry.total_questions} correct</p>
               <p className="text-2xl font-bold text-blue-400 mt-2">{entry.score} pts</p>
@@ -179,11 +182,13 @@ export default function LeaderboardPage() {
         {/* Remaining Entries - Table */}
         {rest.length > 0 && (
           <div className="space-y-2">
-            {rest.map((entry) => (
+            {rest.map((entry, idx) => (
               <div
                 key={entry.rank}
-                className="bg-slate-800/50 border border-slate-700 rounded-xl p-4 flex justify-between items-center"
+                className="card-game rise-in p-4 flex justify-between items-center gap-3"
+                style={{ animationDelay: `${idx * 60}ms` }}
               >
+                <span className="avatar-circle w-10 h-10 text-sm shrink-0">{entry.username.charAt(0).toUpperCase()}</span>
                 <div className="flex-1">
                   <p className="font-bold text-white">
                     #{entry.rank} {entry.username}
@@ -201,7 +206,7 @@ export default function LeaderboardPage() {
         {/* Back Button */}
         <div className="text-center">
           <Link href="/">
-            <button className="inline-block px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition">
+            <button className="inline-block px-8 py-3 surface-accent text-white font-semibold rounded-xl transition">
               Back to Home
             </button>
           </Link>
