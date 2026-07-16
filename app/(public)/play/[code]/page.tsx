@@ -1,6 +1,7 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { supabaseBrowser } from '@/lib/supabase-browser';
 import { useParams, useRouter } from 'next/navigation';
 import Countdown from '../../components/Countdown';
 
@@ -23,6 +24,11 @@ export default function PlayPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
+
+  const submittedRef = useRef(false);
+  const answersRef = useRef<Record<number, number>>({});
+  useEffect(() => { submittedRef.current = submitted; }, [submitted]);
+  useEffect(() => { answersRef.current = answers; }, [answers]);
 
   useEffect(() => {
     const loadQuestions = async () => {
@@ -72,6 +78,46 @@ export default function PlayPage() {
     };
 
     loadQuestions();
+  }, [code, router]);
+
+  useEffect(() => {
+    const CODE = code.toUpperCase();
+    let done = false;
+    const onGameEnd = async () => {
+      if (done) return;
+      done = true;
+      if (!submittedRef.current && Object.keys(answersRef.current).length > 0) {
+        try {
+          await fetch('/api/submissions', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              session_token: localStorage.getItem('session_token'),
+              submitted_answers: answersRef.current,
+            }),
+          });
+        } catch {}
+      }
+      router.push(`/leaderboard/${CODE}`);
+    };
+    const channel = supabaseBrowser
+      .channel(`room-status:${CODE}`)
+      .on('postgres_changes',
+        { event: 'UPDATE', schema: 'public', table: 'rooms', filter: `room_code=eq.${CODE}` },
+        (payload) => {
+          if ((payload.new as { status?: string })?.status === 'finished') onGameEnd();
+        })
+      .subscribe();
+    const poll = setInterval(async () => {
+      try {
+        const res = await fetch(`/api/rooms/${CODE}/status`);
+        if (res.ok) {
+          const d = await res.json();
+          if (d.status === 'finished') onGameEnd();
+        }
+      } catch {}
+    }, 15000);
+    return () => { supabaseBrowser.removeChannel(channel); clearInterval(poll); };
   }, [code, router]);
 
   const handleNext = () => {

@@ -32,6 +32,7 @@ export default function JoinPage() {
 
       const data = await res.json();
       localStorage.setItem('session_token', data.session_token);
+      localStorage.setItem('username', username);
       router.push(`/lobby/${roomCode.toUpperCase()}`);
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to join');
