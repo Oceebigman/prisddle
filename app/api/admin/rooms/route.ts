@@ -75,3 +75,48 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: 'Server error' }, { status: 500 });
   }
 }
+export async function GET(req: NextRequest) {
+  if (!verifyAdminAuth(req)) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+  try {
+    const { data: rooms } = await supabase
+      .from('rooms')
+      .select('id, room_name, room_code, status, created_at')
+      .order('created_at', { ascending: false })
+      .limit(50);
+    if (!rooms) return NextResponse.json([]);
+    const detailed = await Promise.all(
+      rooms.map(async (room) => {
+        const { count } = await supabase
+          .from('player_sessions')
+          .select('id', { count: 'exact', head: true })
+          .eq('room_id', room.id);
+        let winner = null;
+        if (room.status === 'finished') {
+          const { data: top } = await supabase
+            .from('submissions')
+            .select('player_id, score, time_used_seconds')
+            .eq('room_id', room.id)
+            .order('score', { ascending: false })
+            .order('time_used_seconds', { ascending: true })
+            .limit(1)
+            .single();
+          if (top) {
+            const { data: player } = await supabase
+              .from('player_sessions')
+              .select('username')
+              .eq('id', top.player_id)
+              .single();
+            winner = { username: player?.username || 'Anonymous', score: top.score };
+          }
+        }
+        return { ...room, player_count: count ?? 0, winner };
+      })
+    );
+    return NextResponse.json(detailed);
+  } catch (error) {
+    console.error('List rooms error:', error);
+    return NextResponse.json({ error: 'Server error' }, { status: 500 });
+  }
+}
