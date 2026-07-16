@@ -133,7 +133,9 @@ export default function PlayPage() {
   };
 
   const handleSelectOption = (optionIndex: number) => {
-    setAnswers({...answers, [currentQuestion]: optionIndex});
+    const q = questions[currentQuestion - 1];
+    if (!q) return;
+    setAnswers({...answers, [q.question_number]: optionIndex});
   };
 
   const handleSubmit = async () => {
@@ -230,8 +232,8 @@ export default function PlayPage() {
     );
   }
 
-  const question = questions.find((q) => q.question_number === currentQuestion);
-  const currentAnswer = answers[currentQuestion];
+  const question = questions[currentQuestion - 1];
+  const currentAnswer = question ? answers[question.question_number] : undefined;
   const answeredCount = Object.keys(answers).length;
 
   if (!question) {
