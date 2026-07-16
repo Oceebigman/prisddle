@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import Link from 'next/link';
+import { supabaseBrowser } from '@/lib/supabase-browser';
 import { useAdmin } from '../../admin-context';
 import AdminHeader from '../../AdminHeader';
 
@@ -53,6 +54,18 @@ export default function RoomControlPage() {
     };
     fetchInfo();
   }, [id, adminKey]);
+
+  useEffect(() => {
+    if (!roomCode) return;
+    const channel = supabaseBrowser
+      .channel(`room:${roomCode}`)
+      .on('presence', { event: 'sync' }, () => {
+        const n = Object.keys(channel.presenceState()).length;
+        setPlayerCount(n);
+      })
+      .subscribe();
+    return () => { supabaseBrowser.removeChannel(channel); };
+  }, [roomCode]);
 
   const handleStart = async () => {
     setLoading(true);
