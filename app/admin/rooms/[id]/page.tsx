@@ -37,6 +37,23 @@ export default function RoomControlPage() {
     return () => clearInterval(interval);
   }, [id, adminKey]);
 
+  useEffect(() => {
+    const fetchInfo = async () => {
+      try {
+        const res = await fetch(`/api/admin/rooms/${id}/info`, {
+          headers: { 'x-admin-key': adminKey! },
+        });
+        if (res.ok) {
+          const data = await res.json();
+          if (data.room_code) setRoomCode(data.room_code);
+        }
+      } catch (err) {
+        console.error('Failed to fetch room info:', err);
+      }
+    };
+    fetchInfo();
+  }, [id, adminKey]);
+
   const handleStart = async () => {
     setLoading(true);
     setError('');
