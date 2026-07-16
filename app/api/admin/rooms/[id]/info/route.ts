@@ -11,9 +11,13 @@ export async function GET(
   const { id } = await params;
   const { data: room } = await supabase
     .from('rooms')
-    .select('room_code, room_name, status')
+    .select('room_code, room_name, status, ends_at')
     .eq('id', id)
     .single();
   if (!room) return NextResponse.json({ error: 'Room not found' }, { status: 404 });
+  if ((room.status === 'scheduled' || room.status === 'live') && room.ends_at && new Date(room.ends_at) < new Date()) {
+    await supabase.from('rooms').update({ status: 'finished' }).eq('id', id);
+    room.status = 'finished';
+  }
   return NextResponse.json(room);
 }

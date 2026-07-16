@@ -35,6 +35,8 @@ export default function RoomControlPage() {
       }
     };
     fetchInfo();
+    const t = setInterval(fetchInfo, 10000);
+    return () => clearInterval(t);
   }, [id, adminKey]);
 
   useEffect(() => {

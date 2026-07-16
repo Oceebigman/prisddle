@@ -13,10 +13,12 @@ const AdminContext = createContext<AdminContextType | null>(null);
 
 export function AdminProvider({ children }: { children: React.ReactNode }) {
   const [adminKey, setAdminKey] = useState<string | null>(null);
+  const [ready, setReady] = useState(false);
 
   useEffect(() => {
     const saved = localStorage.getItem('admin_key');
     if (saved) setAdminKey(saved);
+    setReady(true);
   }, []);
 
   const login = (key: string) => {
@@ -31,7 +33,7 @@ export function AdminProvider({ children }: { children: React.ReactNode }) {
 
   return (
     <AdminContext.Provider value={{ isAdmin: !!adminKey, adminKey, login, logout }}>
-      {children}
+      {ready ? children : null}
     </AdminContext.Provider>
   );
 }

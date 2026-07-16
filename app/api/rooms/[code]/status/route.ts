@@ -15,6 +15,10 @@ export async function GET(
       .eq('room_code', code.toUpperCase())
       .single();
     if (!room) return null;
+    if ((room.status === 'scheduled' || room.status === 'live') && room.ends_at && new Date(room.ends_at) < new Date()) {
+      await supabase.from('rooms').update({ status: 'finished' }).eq('id', room.id);
+      room.status = 'finished';
+    }
     const { count } = await supabase
       .from('player_sessions')
       .select('*', { count: 'exact', head: true })
