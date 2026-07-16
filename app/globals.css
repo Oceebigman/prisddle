@@ -126,3 +126,55 @@ input::placeholder {
 .mx-auto {
   @apply mx-auto;
 }
+
+/* ===== Prisddle design tokens ===== */
+:root {
+  --accent-from: #6366f1;
+  --accent-to: #8b5cf6;
+  --gold: #fbbf24;
+}
+
+/* Glassy elevated card */
+.card-game {
+  background: linear-gradient(180deg, rgba(51,65,85,0.55), rgba(30,41,59,0.65));
+  border: 1px solid rgba(148,163,184,0.18);
+  border-radius: 1.25rem;
+  backdrop-filter: blur(12px);
+  box-shadow: 0 8px 32px rgba(0,0,0,0.35);
+}
+
+/* Accent gradient surface (primary buttons/cards) */
+.surface-accent {
+  background: linear-gradient(135deg, var(--accent-from), var(--accent-to));
+  box-shadow: 0 4px 24px rgba(99,102,241,0.35);
+}
+.surface-accent:hover {
+  filter: brightness(1.1);
+  box-shadow: 0 6px 32px rgba(99,102,241,0.5);
+}
+
+/* Soft glow for highlights (podium #1, timers) */
+.glow-gold { box-shadow: 0 0 24px rgba(251,191,36,0.25); }
+.glow-accent { box-shadow: 0 0 24px rgba(99,102,241,0.3); }
+
+/* Initial-letter avatar circle */
+.avatar-circle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9999px;
+  font-weight: 700;
+  color: white;
+  background: linear-gradient(135deg, var(--accent-from), var(--accent-to));
+  border: 2px solid rgba(255,255,255,0.15);
+}
+
+/* Gentle entrance for list rows / podium */
+@keyframes rise-in {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.rise-in { animation: rise-in 0.35s ease-out both; }
+@media (prefers-reduced-motion: reduce) {
+  .rise-in { animation: none; }
+}
