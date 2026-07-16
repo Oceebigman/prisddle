@@ -24,7 +24,8 @@ export async function POST(req: NextRequest) {
       .single();
     if (!room) return NextResponse.json({ error: 'Room not found' }, { status: 404 });
     const now = new Date();
-    if (room.ends_at && new Date(room.ends_at) < now) {
+    // 60s grace so timer-expiry auto-submits landing just after ends_at still count
+    if (room.ends_at && new Date(room.ends_at).getTime() + 60000 < now.getTime()) {
       return NextResponse.json({ error: 'Submission deadline passed' }, { status: 400 });
     }
     const { data: existing } = await supabase

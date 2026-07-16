@@ -168,6 +168,9 @@ export default function PlayPage() {
         setTimeout(() => {
           router.push(`/leaderboard/${code}`);
         }, 1500);
+      } else if (res.status === 400) {
+        router.push(`/leaderboard/${code}`);
+        return;
       } else {
         setError('Failed to submit. Please try again.');
       }
@@ -329,13 +332,15 @@ export default function PlayPage() {
         </div>
 
         {/* Submit */}
-        <button 
-          onClick={handleSubmit} 
-          disabled={submitting}
-          className="w-full surface-accent text-white font-bold py-4 px-4 rounded-xl transition disabled:opacity-50"
-        >
-          {submitting ? '⏳ Submitting...' : '🎮 Submit Answers'}
-        </button>
+        {currentQuestion === questions.length && (
+          <button 
+            onClick={handleSubmit} 
+            disabled={submitting}
+            className="w-full surface-accent text-white font-bold py-4 px-4 rounded-xl transition disabled:opacity-50"
+          >
+            {submitting ? '⏳ Submitting...' : '🎮 Submit Answers'}
+          </button>
+        )}
       </div>
     </div>
   );
