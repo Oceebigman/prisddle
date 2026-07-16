@@ -7,11 +7,18 @@
 }
 
 body {
-  @apply bg-gradient-to-b from-slate-900 to-slate-800 text-white font-sans antialiased;
+  @apply text-white font-sans antialiased;
+  background:
+    radial-gradient(ellipse 80% 50% at 50% -20%, rgba(99,102,241,0.15), transparent),
+    linear-gradient(180deg, #0f172a 0%, #1e1b4b 60%, #0f172a 100%);
+  min-height: 100vh;
 }
 
 button {
-  @apply font-bold px-6 py-3 border-none rounded cursor-pointer transition-all duration-200;
+  @apply font-bold px-6 py-3 border-none rounded-xl cursor-pointer transition-all duration-200;
+}
+button:active {
+  transform: scale(0.97);
 }
 
 button:hover {
@@ -19,12 +26,15 @@ button:hover {
 }
 
 input, textarea, select {
-  @apply w-full px-4 py-3 bg-slate-700/80 border border-slate-600 rounded text-white text-base;
+  @apply w-full px-4 py-3 bg-slate-900/60 border border-slate-600 rounded-xl text-white text-base;
   font-family: inherit;
+  backdrop-filter: blur(8px);
 }
 
 input:focus, textarea:focus, select:focus {
-  @apply outline-none border-blue-400 ring-2 ring-blue-400/20;
+  outline: none;
+  border-color: var(--accent-from);
+  box-shadow: 0 0 0 3px rgba(99,102,241,0.2), 0 0 20px rgba(99,102,241,0.15);
 }
 
 input::placeholder {
