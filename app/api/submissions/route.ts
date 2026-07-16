@@ -1,5 +1,7 @@
 import { supabase } from '@/lib/supabase-server';
 import { scoreRiddleSubmission } from '@/lib/scoring';
+import { selectRoomQuestions } from '@/lib/select-questions';
+import type { RiddleQuestion } from '@/lib/scoring';
 import { NextRequest, NextResponse } from 'next/server';
 import crypto from 'crypto';
 export async function POST(req: NextRequest) {
@@ -38,7 +40,8 @@ export async function POST(req: NextRequest) {
       .select('*')
       .eq('puzzle_id', room.puzzle_id);
     if (!questions) return NextResponse.json({ error: 'Puzzle not found' }, { status: 404 });
-    const { score, correct_count, total_questions } = scoreRiddleSubmission(questions, submitted_answers);
+    const roomQuestions = selectRoomQuestions(room.id, questions as RiddleQuestion[], 10);
+    const { score, correct_count, total_questions } = scoreRiddleSubmission(roomQuestions, submitted_answers);
     const startMs = room.starts_at ? new Date(room.starts_at).getTime() : now.getTime();
     const timeUsed = Math.max(0, Math.floor((now.getTime() - startMs) / 1000));
     const { error: insertError } = await supabase

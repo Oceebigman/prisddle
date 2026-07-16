@@ -1,4 +1,6 @@
 import { supabase } from '@/lib/supabase-server';
+import { selectRoomQuestions } from '@/lib/select-questions';
+import type { RiddleQuestion } from '@/lib/scoring';
 import { NextResponse } from 'next/server';
 import crypto from 'crypto';
 
@@ -14,18 +16,29 @@ export async function GET(
   const tokenHash = crypto.createHash('sha256').update(sessionToken).digest('hex');
   const { data: session } = await supabase
     .from('player_sessions')
-    .select('id')
+    .select('id, room_id')
     .eq('session_token_hash', tokenHash)
     .single();
 
   if (!session) return NextResponse.json({ error: 'Invalid token' }, { status: 401 });
 
-  // Only send options, NOT correct_index (answer key stays on server)
   const { data: questions } = await supabase
     .from('riddle_questions')
-    .select('question_number, riddle_text, options')
+    .select('id, question_number, riddle_text, options, correct_index, points')
     .eq('puzzle_id', id)
     .order('question_number');
 
-  return NextResponse.json(questions || []);
+  if (!questions) return NextResponse.json([]);
+
+  // Deterministic per-room draw + option shuffle (same for all players in the room)
+  const selected = selectRoomQuestions(session.room_id, questions as RiddleQuestion[], 10);
+
+  // Strip the answer key before it leaves the server
+  const publicQuestions = selected.map(({ question_number, riddle_text, options }) => ({
+    question_number,
+    riddle_text,
+    options,
+  }));
+
+  return NextResponse.json(publicQuestions);
 }
