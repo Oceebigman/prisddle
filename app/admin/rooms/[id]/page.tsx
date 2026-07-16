@@ -47,6 +47,8 @@ export default function RoomControlPage() {
         if (res.ok) {
           const data = await res.json();
           if (data.room_code) setRoomCode(data.room_code);
+          if (data.status === 'scheduled' || data.status === 'live') setStarted(true);
+          if (data.status === 'finished') { setEnded(true); setStarted(false); }
         }
       } catch (err) {
         console.error('Failed to fetch room info:', err);

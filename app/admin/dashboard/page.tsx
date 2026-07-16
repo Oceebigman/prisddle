@@ -33,11 +33,13 @@ export default function AdminDashboardPage() {
             </div>
           </Link>
 
-          {/* Active Rooms - Secondary Outlined Card */}
-          <div className="w-full h-full bg-slate-800/50 border border-slate-700 rounded-xl p-6 flex flex-col justify-center">
-            <h2 className="text-lg font-semibold text-white">Active Rooms</h2>
-            <p className="mt-1 text-slate-400 text-sm">Manage running games</p>
-          </div>
+          {/* Rooms - Secondary Outlined Card */}
+          <Link href="/admin/rooms" className="block">
+            <div className="w-full h-full bg-slate-800/50 border border-slate-600 rounded-xl p-6 transition-colors hover:bg-slate-700 cursor-pointer flex flex-col justify-center">
+              <h2 className="text-lg font-semibold text-white">Rooms</h2>
+              <p className="mt-1 text-slate-400 text-sm">History, live games, and winners</p>
+            </div>
+          </Link>
         </div>
 
         {/* Quick Info Card - Separate Below Grid */}
