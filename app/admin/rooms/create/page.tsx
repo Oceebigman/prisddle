@@ -10,7 +10,7 @@ export default function CreateRoomPage() {
   const router = useRouter();
   const { isAdmin, adminKey } = useAdmin();
   const [roomName, setRoomName] = useState('');
-  const [duration, setDuration] = useState('1200');
+  const [duration, setDuration] = useState('300');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [created, setCreated] = useState<{ id: string; room_code: string } | null>(null);
@@ -114,9 +114,9 @@ export default function CreateRoomPage() {
                   disabled={loading}
                   className="w-full px-4 py-3 bg-slate-900/50 border border-slate-600 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
                 >
-                  <option value="300">5 minutes</option>
+                  <option value="300">5 minutes (default)</option>
                   <option value="600">10 minutes</option>
-                  <option value="1200">20 minutes (default)</option>
+                  <option value="1200">20 minutes</option>
                   <option value="1800">30 minutes</option>
                 </select>
               </div>

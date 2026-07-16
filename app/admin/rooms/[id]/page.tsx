@@ -152,8 +152,8 @@ export default function RoomControlPage() {
           </p>
           <p className="text-slate-400 text-sm">
             {started 
-              ? 'Game in progress — players have 20 minutes to solve 5 riddles'
-              : 'Once started, players will have 20 minutes to solve 5 riddles'}
+              ? 'Game in progress — players are solving the riddles'
+              : 'Once started, players race the room timer to solve the riddles'}
           </p>
         </div>
       </main>
