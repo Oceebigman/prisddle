@@ -64,7 +64,7 @@ export default function CreateRoomPage() {
   if (!isAdmin) return null;
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-900 to-slate-800">
+    <div className="min-h-screen">
       <AdminHeader />
 
       <main className="max-w-md mx-auto px-6 py-10 flex flex-col gap-6">
@@ -73,7 +73,7 @@ export default function CreateRoomPage() {
             <h1 className="text-2xl font-bold text-white">✓ Room Created!</h1>
             <button
               onClick={copyCode}
-              className="inline-block px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white font-mono font-bold rounded-lg transition-colors"
+              className="inline-block px-4 py-2 surface-accent text-white font-mono font-bold rounded-lg transition-colors"
             >
               {copied ? 'Copied!' : created.room_code}
             </button>
@@ -126,7 +126,7 @@ export default function CreateRoomPage() {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full py-3 px-4 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition-colors disabled:opacity-50"
+                className="w-full py-3 px-4 surface-accent text-white font-semibold rounded-lg transition-colors disabled:opacity-50"
               >
                 {loading ? 'Creating...' : 'Create Room'}
               </button>

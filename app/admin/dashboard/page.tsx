@@ -19,7 +19,7 @@ export default function AdminDashboardPage() {
   if (!isAdmin) return null;
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-900 to-slate-800">
+    <div className="min-h-screen">
       <AdminHeader />
 
       <main className="max-w-4xl mx-auto px-6 py-10 flex flex-col gap-6">
@@ -27,7 +27,7 @@ export default function AdminDashboardPage() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {/* Create Room - Primary Blue Button Card */}
           <Link href="/admin/rooms/create" className="block">
-            <div className="w-full h-full bg-blue-600 hover:bg-blue-700 rounded-xl p-6 transition-colors cursor-pointer flex flex-col justify-center">
+            <div className="w-full h-full surface-accent rounded-xl p-6 transition-colors cursor-pointer flex flex-col justify-center">
               <h2 className="text-lg font-semibold text-white">Create New Room</h2>
               <p className="mt-1 text-blue-100 text-sm">Start a new riddle competition</p>
             </div>
@@ -43,7 +43,7 @@ export default function AdminDashboardPage() {
         </div>
 
         {/* Quick Info Card - Separate Below Grid */}
-        <div className="bg-slate-800/50 border border-slate-700 rounded-xl p-6">
+        <div className="card-game p-6">
           <h2 className="text-lg font-semibold text-white mb-3">Quick Info</h2>
           <ul className="space-y-2">
             <li className="text-slate-300 text-sm">• Create new riddle competition rooms</li>

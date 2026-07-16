@@ -41,7 +41,7 @@ export default function RoomsListPage() {
     load();
   }, [adminKey]);
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-900 to-slate-800">
+    <div className="min-h-screen">
       <AdminHeader />
       <main className="max-w-4xl mx-auto px-6 py-10 flex flex-col gap-6">
         <Link href="/admin/dashboard" className="text-blue-400 hover:text-blue-300 text-sm font-medium">
@@ -55,7 +55,7 @@ export default function RoomsListPage() {
         )}
         <div className="flex flex-col gap-4">
           {rooms.map((room) => (
-            <div key={room.id} className="bg-slate-800/50 border border-slate-700 rounded-xl p-6 flex flex-wrap items-center gap-4">
+            <div key={room.id} className="card-game p-6 flex flex-wrap items-center gap-4">
               <div className="flex-1 min-w-[200px]">
                 <p className="font-bold text-white">{room.room_name}</p>
                 <p className="text-sm text-slate-400 mt-1">
@@ -79,7 +79,7 @@ export default function RoomsListPage() {
                 </Link>
                 {room.status === 'finished' && (
                   <Link href={`/leaderboard/${room.room_code}`}>
-                    <button className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-lg transition">
+                    <button className="px-4 py-2 surface-accent text-white text-sm font-semibold rounded-lg transition">
                       View Results
                     </button>
                   </Link>

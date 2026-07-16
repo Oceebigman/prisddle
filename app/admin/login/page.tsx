@@ -44,8 +44,8 @@ export default function AdminLoginPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-900 to-slate-800 flex items-center justify-center px-4">
-      <div className="max-w-md w-full bg-slate-800/50 border border-slate-700 rounded-xl p-8">
+    <div className="min-h-screen flex items-center justify-center px-4">
+      <div className="max-w-md w-full card-game p-8">
         <h1 className="text-3xl font-bold text-white text-center mb-6">Admin Login</h1>
 
         <form onSubmit={handleLogin} className="space-y-4">
@@ -66,7 +66,7 @@ export default function AdminLoginPage() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg font-semibold transition-colors disabled:opacity-50"
+            className="w-full py-3 surface-accent text-white rounded-lg font-semibold transition-colors disabled:opacity-50"
           >
             {loading ? 'Logging in...' : 'Login'}
           </button>

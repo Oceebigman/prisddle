@@ -19,26 +19,6 @@ export default function RoomControlPage() {
   const [ended, setEnded] = useState(false);
 
   useEffect(() => {
-    const fetchRoom = async () => {
-      try {
-        const res = await fetch(`/api/admin/rooms/${id}/submissions`, {
-          headers: { 'x-admin-key': adminKey! },
-        });
-        if (res.ok) {
-          const data = await res.json();
-          setPlayerCount(data.length || 0);
-        }
-      } catch (err) {
-        console.error('Failed to fetch room:', err);
-      }
-    };
-
-    const interval = setInterval(fetchRoom, 3000);
-    fetchRoom();
-    return () => clearInterval(interval);
-  }, [id, adminKey]);
-
-  useEffect(() => {
     const fetchInfo = async () => {
       try {
         const res = await fetch(`/api/admin/rooms/${id}/info`, {
@@ -109,7 +89,7 @@ export default function RoomControlPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-900 to-slate-800">
+    <div className="min-h-screen">
       <AdminHeader />
 
       <main className="max-w-2xl mx-auto px-6 py-10 flex flex-col gap-6">
@@ -137,13 +117,13 @@ export default function RoomControlPage() {
             <h2 className="text-2xl font-bold text-white">✓ Game Ended!</h2>
             <p className="text-blue-200">Results are now available</p>
             <Link href={`/leaderboard/${roomCode || id}`}>
-              <button className="px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition-colors">
+              <button className="px-8 py-3 surface-accent text-white font-semibold rounded-lg transition-colors">
                 View Results
               </button>
             </Link>
           </div>
         ) : (
-          <div className="bg-slate-800/50 border border-slate-700 rounded-xl p-8 text-center flex flex-col items-center gap-4">
+          <div className="card-game p-8 text-center flex flex-col items-center gap-4">
             <h2 className="text-2xl font-bold text-white">Ready to Start?</h2>
             <p className="text-slate-400">Players can join before you start</p>
 
@@ -157,7 +137,7 @@ export default function RoomControlPage() {
             <button
               onClick={handleStart}
               disabled={loading}
-              className="px-8 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition-colors text-lg disabled:opacity-50"
+              className="px-8 py-3 surface-accent text-white font-semibold rounded-lg transition-colors text-lg disabled:opacity-50"
             >
               {loading ? 'Starting...' : 'Start Game'}
             </button>
@@ -165,7 +145,7 @@ export default function RoomControlPage() {
         )}
 
         {/* Game Info Card */}
-        <div className="bg-slate-800/50 border border-slate-700 rounded-xl p-6">
+        <div className="card-game p-6">
           <h3 className="text-lg font-semibold text-white mb-3">Game Info</h3>
           <p className="text-slate-300 text-sm mb-2">
             Room ID: <span className="font-mono text-blue-400 break-all">{id}</span>
