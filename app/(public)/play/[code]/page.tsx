@@ -203,10 +203,10 @@ export default function PlayPage() {
     return (
       <div className="min-h-screen flex items-center justify-center px-4">
         <div className="max-w-md text-center">
-          <p className="text-red-400 mb-4">{error}</p>
+          <p className="text-red-700 mb-4">{error}</p>
           <button 
             onClick={() => router.push(`/join?code=${code}`)}
-            className="px-6 py-2 surface-accent text-white rounded-lg"
+            className="px-6 py-2 surface-accent text-[#202020] rounded-lg"
           >
             Back to Join
           </button>
@@ -218,7 +218,7 @@ export default function PlayPage() {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <p className="text-white">Loading quiz...</p>
+        <p className="text-[#202020]">Loading quiz...</p>
       </div>
     );
   }
@@ -227,10 +227,10 @@ export default function PlayPage() {
     return (
       <div className="min-h-screen flex items-center justify-center px-4">
         <div className="max-w-md text-center">
-          <p className="text-slate-400 mb-4">No questions available</p>
+          <p className="text-[#202020]/60 mb-4">No questions available</p>
           <button 
             onClick={() => router.push('/')}
-            className="px-6 py-2 surface-accent text-white rounded-lg"
+            className="px-6 py-2 surface-accent text-[#202020] rounded-lg"
           >
             Back to Home
           </button>
@@ -244,8 +244,8 @@ export default function PlayPage() {
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <p className="text-5xl mb-4">✓</p>
-          <p className="text-white text-2xl font-bold">Submitted!</p>
-          <p className="text-slate-400 mt-2">Redirecting to leaderboard...</p>
+          <p className="text-[#202020] text-2xl font-bold">Submitted!</p>
+          <p className="text-[#202020]/60 mt-2">Redirecting to leaderboard...</p>
         </div>
       </div>
     );
@@ -258,7 +258,7 @@ export default function PlayPage() {
   if (!question) {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <p className="text-slate-400">Question not found</p>
+        <p className="text-[#202020]/60">Question not found</p>
       </div>
     );
   }
@@ -277,10 +277,10 @@ export default function PlayPage() {
         {/* Progress */}
         <div className="card-game p-4 mb-6">
           <div className="flex justify-between items-center mb-3">
-            <span className="text-slate-400">Question {currentQuestion} of {questions.length}</span>
-            <span className="text-[#DFD8D0] font-bold">{answeredCount}/{questions.length} answered</span>
+            <span className="text-[#202020]/60">Question {currentQuestion} of {questions.length}</span>
+            <span className="text-[#202020] font-bold">{answeredCount}/{questions.length} answered</span>
           </div>
-          <div className="w-full bg-slate-700 rounded-full h-2">
+          <div className="w-full bg-[#202020]/10 rounded-full h-2">
             <div 
               className="surface-accent h-2 rounded-full transition-all duration-300"
               style={{ width: `${(currentQuestion / questions.length) * 100}%` }}
@@ -290,7 +290,7 @@ export default function PlayPage() {
 
         {/* Question Card */}
         <div className="card-game p-8 mb-6">
-          <h2 className="text-2xl font-bold text-white mb-8">{question.riddle_text}</h2>
+          <h2 className="text-2xl font-bold text-[#202020] mb-8">{question.riddle_text}</h2>
 
           {/* Multiple Choice Options */}
           <div className="space-y-3 mb-6">
@@ -301,8 +301,8 @@ export default function PlayPage() {
                   onClick={() => handleSelectOption(idx)}
                   className={`w-full p-4 rounded-lg font-medium text-left transition-all ${
                     currentAnswer === idx
-                      ? 'surface-accent text-white border-2 border-[#DFD8D0]/60'
-                      : 'bg-slate-800/60 text-slate-200 border-2 border-slate-600 hover:border-[#DFD8D0]/70 hover:bg-slate-700/60'
+                      ? 'surface-accent text-[#202020] border-2 border-[#DFD8D0]/60'
+                      : 'bg-white/55 text-[#202020]/85 border-2 border-[#202020]/25 hover:border-[#202020]/50 hover:bg-[#202020]/10/60'
                   }`}
                 >
                   <span className="inline-block w-6 h-6 rounded border mr-3 text-center text-sm">
@@ -312,12 +312,12 @@ export default function PlayPage() {
                 </button>
               ))
             ) : (
-              <p className="text-red-400">Error: Options not available</p>
+              <p className="text-red-700">Error: Options not available</p>
             )}
           </div>
 
           {currentAnswer !== undefined && (
-            <p className="text-sm text-green-400">Answer selected ✓</p>
+            <p className="text-sm text-green-700">Answer selected ✓</p>
           )}
         </div>
 
@@ -328,8 +328,8 @@ export default function PlayPage() {
             disabled={currentQuestion === 1}
             className={`flex-1 px-4 py-3 rounded-lg font-bold transition-all ${
               currentQuestion === 1 
-                ? 'bg-slate-700 text-slate-500 cursor-not-allowed opacity-50' 
-                : 'bg-slate-700 text-white hover:bg-slate-600'
+                ? 'bg-[#202020]/10 text-[#202020]/50 cursor-not-allowed opacity-50' 
+                : 'bg-[#202020]/10 text-[#202020] hover:bg-[#202020]/20'
             }`}
           >
             ← Previous
@@ -339,8 +339,8 @@ export default function PlayPage() {
             disabled={currentQuestion === questions.length}
             className={`flex-1 px-4 py-3 rounded-lg font-bold transition-all ${
               currentQuestion === questions.length 
-                ? 'bg-slate-700 text-slate-500 cursor-not-allowed opacity-50' 
-                : 'bg-slate-700 text-white hover:bg-slate-600'
+                ? 'bg-[#202020]/10 text-[#202020]/50 cursor-not-allowed opacity-50' 
+                : 'bg-[#202020]/10 text-[#202020] hover:bg-[#202020]/20'
             }`}
           >
             Next →
@@ -352,7 +352,7 @@ export default function PlayPage() {
           <button 
             onClick={handleSubmit} 
             disabled={submitting}
-            className="w-full surface-accent text-white font-bold py-4 px-4 rounded-xl transition disabled:opacity-50"
+            className="w-full surface-accent text-[#202020] font-bold py-4 px-4 rounded-xl transition disabled:opacity-50"
           >
             {submitting ? '⏳ Submitting...' : '🎮 Submit Answers'}
           </button>

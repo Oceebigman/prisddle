@@ -33,9 +33,9 @@ export default function Countdown({ startsAt, endsAt, onFinish }: CountdownProps
     return () => clearInterval(interval);
   }, [endsAt, onFinish]);
   return (
-    <div className={`text-center mb-6 p-4 rounded-lg ${finished ? 'bg-red-900' : 'bg-slate-800'}`}>
-      <p className="text-slate-400 text-sm mb-2">Time Remaining</p>
-      <p className={`text-4xl font-bold font-mono ${finished ? 'text-red-400' : 'text-white'}`}>
+    <div className={`text-center mb-6 p-4 rounded-lg ${finished ? 'bg-red-200/70' : 'bg-white/60'}`}>
+      <p className="text-[#202020]/60 text-sm mb-2">Time Remaining</p>
+      <p className={`text-4xl font-bold font-mono ${finished ? 'text-red-700' : 'text-[#202020]'}`}>
         {timeRemaining}
       </p>
     </div>

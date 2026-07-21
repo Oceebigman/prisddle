@@ -62,7 +62,7 @@ export default function LobbyPage() {
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center px-4">
-        <p className="text-slate-400">Loading room...</p>
+        <p className="text-[#202020]/60">Loading room...</p>
       </div>
     );
   }
@@ -70,22 +70,22 @@ export default function LobbyPage() {
   return (
     <div className="min-h-screen flex items-center justify-center px-4">
       <div className="max-w-md mx-auto w-full flex flex-col gap-6">
-        <Link href="/" className="text-[#DFD8D0]/80 hover:text-[#DFD8D0] text-sm font-medium">
+        <Link href="/" className="text-[#202020]/70 hover:text-[#202020] text-sm font-medium">
           ← Back
         </Link>
         <div className="card-game rise-in p-8 text-center">
-          <h1 className="text-4xl font-bold text-white">{status?.room_name}</h1>
-          <p className="text-slate-400 mt-2">
-            Code: <span className="font-mono text-[#DFD8D0]">{code}</span>
+          <h1 className="text-4xl font-bold text-[#202020]">{status?.room_name}</h1>
+          <p className="text-[#202020]/60 mt-2">
+            Code: <span className="font-mono text-[#202020]">{code}</span>
           </p>
         </div>
         <div className="card-game rise-in p-8 text-center">
-          <p className="text-slate-400">Players Joined</p>
-          <p className="text-5xl font-bold text-white mt-2">{count}</p>
+          <p className="text-[#202020]/60">Players Joined</p>
+          <p className="text-5xl font-bold text-[#202020] mt-2">{count}</p>
           {players.length > 0 && (
             <div className="flex flex-wrap justify-center gap-2 mt-4">
               {players.map((name, i) => (
-                <span key={i} className="px-3 py-1 rounded-full bg-slate-900/50 border border-[#DFD8D0]/30 text-slate-200 text-sm">
+                <span key={i} className="px-3 py-1 rounded-full bg-white/60 border border-[#202020]/25 text-[#202020]/85 text-sm">
                   {name}
                 </span>
               ))}
@@ -95,7 +95,7 @@ export default function LobbyPage() {
         {status?.starts_at && (
           <Countdown startsAt={status.starts_at} endsAt={status.ends_at} onFinish={() => router.push(`/play/${code}`)} />
         )}
-        <p className="text-center text-slate-400 text-sm animate-pulse">
+        <p className="text-center text-[#202020]/60 text-sm animate-pulse">
           Waiting for host to start...
         </p>
       </div>

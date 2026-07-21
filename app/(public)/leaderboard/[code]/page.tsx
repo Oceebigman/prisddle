@@ -80,7 +80,7 @@ export default function LeaderboardPage() {
   if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-b from-slate-900 to-slate-800 flex items-center justify-center px-4">
-        <p className="text-slate-400">Loading results...</p>
+        <p className="text-[#202020]/60">Loading results...</p>
       </div>
     );
   }
@@ -89,9 +89,9 @@ export default function LeaderboardPage() {
     return (
       <div className="min-h-screen bg-gradient-to-b from-slate-900 to-slate-800 flex items-center justify-center px-4">
         <div className="max-w-md w-full text-center">
-          <p className="text-red-400 mb-4">{error}</p>
+          <p className="text-red-700 mb-4">{error}</p>
           <Link href="/">
-            <button className="inline-block px-6 py-2 surface-accent text-white font-semibold rounded-lg transition">
+            <button className="inline-block px-6 py-2 surface-accent text-[#202020] font-semibold rounded-lg transition">
               Back to Home
             </button>
           </Link>
@@ -104,9 +104,9 @@ export default function LeaderboardPage() {
     return (
       <div className="min-h-screen bg-gradient-to-b from-slate-900 to-slate-800 flex items-center justify-center px-4">
         <div className="max-w-md w-full text-center">
-          <p className="text-slate-400 mb-4">No submissions this round</p>
+          <p className="text-[#202020]/60 mb-4">No submissions this round</p>
           <Link href="/">
-            <button className="inline-block px-6 py-2 surface-accent text-white font-semibold rounded-lg transition">
+            <button className="inline-block px-6 py-2 surface-accent text-[#202020] font-semibold rounded-lg transition">
               Back to Home
             </button>
           </Link>
@@ -156,8 +156,8 @@ export default function LeaderboardPage() {
       <div className="max-w-2xl mx-auto flex flex-col gap-6">
         {/* Title */}
         <div className="text-center">
-          <h1 className="text-3xl font-bold text-white mb-2">{roomName}</h1>
-          <h2 className="text-2xl font-bold text-slate-300">Final Results</h2>
+          <h1 className="text-3xl font-bold text-[#202020] mb-2">{roomName}</h1>
+          <h2 className="text-2xl font-bold text-[#202020]/75">Final Results</h2>
         </div>
 
         {/* Podium - Top 3 */}
@@ -171,10 +171,10 @@ export default function LeaderboardPage() {
               <div className="flex justify-center mb-3">
                 <span className="avatar-circle w-14 h-14 text-xl">{entry.username.charAt(0).toUpperCase()}</span>
               </div>
-              <p className="text-xl font-bold text-white">{entry.username}</p>
-              <p className="text-sm text-slate-400 mt-2">{entry.correct_count}/{entry.total_questions} correct</p>
-              <p className="text-2xl font-bold text-[#DFD8D0] mt-2">{entry.score} pts</p>
-              <p className="text-xs text-slate-400 mt-1">{formatTime(entry.time_used_seconds)}</p>
+              <p className="text-xl font-bold text-[#202020]">{entry.username}</p>
+              <p className="text-sm text-[#202020]/60 mt-2">{entry.correct_count}/{entry.total_questions} correct</p>
+              <p className="text-2xl font-bold text-[#202020] mt-2">{entry.score} pts</p>
+              <p className="text-xs text-[#202020]/60 mt-1">{formatTime(entry.time_used_seconds)}</p>
             </div>
           ))}
         </div>
@@ -190,14 +190,14 @@ export default function LeaderboardPage() {
               >
                 <span className="avatar-circle w-10 h-10 text-sm shrink-0">{entry.username.charAt(0).toUpperCase()}</span>
                 <div className="flex-1">
-                  <p className="font-bold text-white">
+                  <p className="font-bold text-[#202020]">
                     #{entry.rank} {entry.username}
                   </p>
-                  <p className="text-sm text-slate-400">
+                  <p className="text-sm text-[#202020]/60">
                     {entry.correct_count}/{entry.total_questions} correct • {formatTime(entry.time_used_seconds)}
                   </p>
                 </div>
-                <p className="text-2xl font-bold text-[#DFD8D0]">{entry.score}</p>
+                <p className="text-2xl font-bold text-[#202020]">{entry.score}</p>
               </div>
             ))}
           </div>
@@ -206,7 +206,7 @@ export default function LeaderboardPage() {
         {/* Back Button */}
         <div className="text-center">
           <Link href="/">
-            <button className="inline-block px-8 py-3 surface-accent text-white font-semibold rounded-xl transition">
+            <button className="inline-block px-8 py-3 surface-accent text-[#202020] font-semibold rounded-xl transition">
               Back to Home
             </button>
           </Link>

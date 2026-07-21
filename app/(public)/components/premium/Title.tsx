@@ -21,7 +21,7 @@ export default function PremiumTitle({ children, subtitle, size = 'xl' }: TitleP
         </span>
       </h1>
       {subtitle && (
-        <p className="text-slate-300 text-lg animate-[slide-up_0.8s_ease-out]">
+        <p className="text-[#202020]/75 text-lg animate-[slide-up_0.8s_ease-out]">
           {subtitle}
         </p>
       )}

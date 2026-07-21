@@ -28,28 +28,28 @@ export default function AdminDashboardPage() {
           {/* Create Room - Primary Blue Button Card */}
           <Link href="/admin/rooms/create" className="block">
             <div className="w-full h-full surface-accent rounded-xl p-6 transition-colors cursor-pointer flex flex-col justify-center">
-              <h2 className="text-lg font-semibold text-white">Create New Room</h2>
+              <h2 className="text-lg font-semibold text-[#202020]">Create New Room</h2>
               <p className="mt-1 text-[#202020]/70 text-sm">Start a new riddle competition</p>
             </div>
           </Link>
 
           {/* Rooms - Secondary Outlined Card */}
           <Link href="/admin/rooms" className="block">
-            <div className="w-full h-full bg-slate-800/50 border border-slate-600 rounded-xl p-6 transition-colors hover:bg-slate-700 cursor-pointer flex flex-col justify-center">
-              <h2 className="text-lg font-semibold text-white">Rooms</h2>
-              <p className="mt-1 text-slate-400 text-sm">History, live games, and winners</p>
+            <div className="w-full h-full bg-white/60/50 border border-[#202020]/25 rounded-xl p-6 transition-colors hover:bg-[#202020]/10 cursor-pointer flex flex-col justify-center">
+              <h2 className="text-lg font-semibold text-[#202020]">Rooms</h2>
+              <p className="mt-1 text-[#202020]/60 text-sm">History, live games, and winners</p>
             </div>
           </Link>
         </div>
 
         {/* Quick Info Card - Separate Below Grid */}
         <div className="card-game p-6">
-          <h2 className="text-lg font-semibold text-white mb-3">Quick Info</h2>
+          <h2 className="text-lg font-semibold text-[#202020] mb-3">Quick Info</h2>
           <ul className="space-y-2">
-            <li className="text-slate-300 text-sm">• Create new riddle competition rooms</li>
-            <li className="text-slate-300 text-sm">• Start and end games</li>
-            <li className="text-slate-300 text-sm">• View player submissions and scores</li>
-            <li className="text-slate-300 text-sm">• Monitor live player counts</li>
+            <li className="text-[#202020]/75 text-sm">• Create new riddle competition rooms</li>
+            <li className="text-[#202020]/75 text-sm">• Start and end games</li>
+            <li className="text-[#202020]/75 text-sm">• View player submissions and scores</li>
+            <li className="text-[#202020]/75 text-sm">• Monitor live player counts</li>
           </ul>
         </div>
       </main>

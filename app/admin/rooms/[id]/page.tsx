@@ -95,51 +95,51 @@ export default function RoomControlPage() {
       <AdminHeader />
 
       <main className="max-w-2xl mx-auto px-6 py-10 flex flex-col gap-6">
-        <Link href="/admin/dashboard" className="text-[#DFD8D0]/80 hover:text-[#DFD8D0] text-sm font-medium">
+        <Link href="/admin/dashboard" className="text-[#202020]/70 hover:text-[#202020] text-sm font-medium">
           ← Back to Dashboard
         </Link>
 
-        <h1 className="text-3xl font-bold text-white">Room Control</h1>
+        <h1 className="text-3xl font-bold text-[#202020]">Room Control</h1>
 
         {/* Status Card */}
         {started && !ended ? (
-          <div className="bg-green-900/20 border border-green-700 rounded-xl p-8 text-center flex flex-col items-center gap-4">
-            <h2 className="text-2xl font-bold text-white">✓ Game Started!</h2>
-            <p className="text-green-200">Players are now solving riddles</p>
+          <div className="bg-green-200/50 border border-green-700/40 rounded-xl p-8 text-center flex flex-col items-center gap-4">
+            <h2 className="text-2xl font-bold text-[#202020]">✓ Game Started!</h2>
+            <p className="text-green-900">Players are now solving riddles</p>
             <button
               onClick={handleEnd}
               disabled={loading}
-              className="px-8 py-3 bg-red-600 hover:bg-red-700 text-white font-semibold rounded-lg transition-colors disabled:opacity-50"
+              className="px-8 py-3 bg-red-600 hover:bg-red-700 text-[#202020] font-semibold rounded-lg transition-colors disabled:opacity-50"
             >
               {loading ? 'Ending...' : 'End Game'}
             </button>
           </div>
         ) : ended ? (
-          <div className="bg-blue-900/20 border border-blue-700 rounded-xl p-8 text-center flex flex-col items-center gap-4">
-            <h2 className="text-2xl font-bold text-white">✓ Game Ended!</h2>
-            <p className="text-blue-200">Results are now available</p>
+          <div className="bg-[#202020]/5 border border-[#202020]/20 rounded-xl p-8 text-center flex flex-col items-center gap-4">
+            <h2 className="text-2xl font-bold text-[#202020]">✓ Game Ended!</h2>
+            <p className="text-[#202020]/70">Results are now available</p>
             <Link href={`/leaderboard/${roomCode || id}`}>
-              <button className="px-8 py-3 surface-accent text-white font-semibold rounded-lg transition-colors">
+              <button className="px-8 py-3 surface-accent text-[#202020] font-semibold rounded-lg transition-colors">
                 View Results
               </button>
             </Link>
           </div>
         ) : (
           <div className="card-game p-8 text-center flex flex-col items-center gap-4">
-            <h2 className="text-2xl font-bold text-white">Ready to Start?</h2>
-            <p className="text-slate-400">Players can join before you start</p>
+            <h2 className="text-2xl font-bold text-[#202020]">Ready to Start?</h2>
+            <p className="text-[#202020]/60">Players can join before you start</p>
 
-            <div className="max-w-xs mx-auto rounded-lg bg-slate-900/50 border border-slate-700 px-8 py-4 my-2">
-              <p className="text-slate-400 text-sm mb-1">Players Joined</p>
-              <p className="text-3xl font-bold text-[#DFD8D0]">{playerCount}</p>
+            <div className="max-w-xs mx-auto rounded-lg bg-white/60 border border-[#202020]/15 px-8 py-4 my-2">
+              <p className="text-[#202020]/60 text-sm mb-1">Players Joined</p>
+              <p className="text-3xl font-bold text-[#202020]">{playerCount}</p>
             </div>
 
-            {error && <p className="text-red-400 text-sm font-medium">{error}</p>}
+            {error && <p className="text-red-700 text-sm font-medium">{error}</p>}
 
             <button
               onClick={handleStart}
               disabled={loading}
-              className="px-8 py-3 surface-accent text-white font-semibold rounded-lg transition-colors text-lg disabled:opacity-50"
+              className="px-8 py-3 surface-accent text-[#202020] font-semibold rounded-lg transition-colors text-lg disabled:opacity-50"
             >
               {loading ? 'Starting...' : 'Start Game'}
             </button>
@@ -148,11 +148,11 @@ export default function RoomControlPage() {
 
         {/* Game Info Card */}
         <div className="card-game p-6">
-          <h3 className="text-lg font-semibold text-white mb-3">Game Info</h3>
-          <p className="text-slate-300 text-sm mb-2">
-            Room ID: <span className="font-mono text-[#DFD8D0] break-all">{id}</span>
+          <h3 className="text-lg font-semibold text-[#202020] mb-3">Game Info</h3>
+          <p className="text-[#202020]/75 text-sm mb-2">
+            Room ID: <span className="font-mono text-[#202020] break-all">{id}</span>
           </p>
-          <p className="text-slate-400 text-sm">
+          <p className="text-[#202020]/60 text-sm">
             {started 
               ? 'Game in progress — players are solving the riddles'
               : 'Once started, players race the room timer to solve the riddles'}

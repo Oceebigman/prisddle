@@ -13,10 +13,10 @@ interface RoomRow {
   winner: { username: string; score: number } | null;
 }
 const statusStyle: Record<string, string> = {
-  waiting: 'bg-yellow-900/30 text-yellow-300 border-yellow-700',
-  scheduled: 'bg-green-900/30 text-green-300 border-green-700',
-  live: 'bg-green-900/30 text-green-300 border-green-700',
-  finished: 'bg-blue-900/30 text-blue-300 border-blue-700',
+  waiting: 'bg-yellow-200/60 text-yellow-900 border-yellow-700/40',
+  scheduled: 'bg-green-200/60 text-green-900 border-green-700/40',
+  live: 'bg-green-200/60 text-green-900 border-green-700/40',
+  finished: 'bg-[#202020]/10 text-[#202020]/80 border-[#202020]/25',
 };
 export default function RoomsListPage() {
   const { adminKey } = useAdmin();
@@ -44,22 +44,22 @@ export default function RoomsListPage() {
     <div className="min-h-screen">
       <AdminHeader />
       <main className="max-w-4xl mx-auto px-6 py-10 flex flex-col gap-6">
-        <Link href="/admin/dashboard" className="text-[#DFD8D0]/80 hover:text-[#DFD8D0] text-sm font-medium">
+        <Link href="/admin/dashboard" className="text-[#202020]/70 hover:text-[#202020] text-sm font-medium">
           ← Back to Dashboard
         </Link>
-        <h1 className="text-3xl font-bold text-white">Rooms</h1>
-        {loading && <p className="text-slate-400">Loading rooms...</p>}
-        {error && <p className="text-red-400">{error}</p>}
+        <h1 className="text-3xl font-bold text-[#202020]">Rooms</h1>
+        {loading && <p className="text-[#202020]/60">Loading rooms...</p>}
+        {error && <p className="text-red-700">{error}</p>}
         {!loading && !error && rooms.length === 0 && (
-          <p className="text-slate-400">No rooms yet. Create one to get started.</p>
+          <p className="text-[#202020]/60">No rooms yet. Create one to get started.</p>
         )}
         <div className="flex flex-col gap-4">
           {rooms.map((room) => (
             <div key={room.id} className="card-game p-6 flex flex-wrap items-center gap-4">
               <div className="flex-1 min-w-[200px]">
-                <p className="font-bold text-white">{room.room_name}</p>
-                <p className="text-sm text-slate-400 mt-1">
-                  Code: <span className="font-mono text-[#DFD8D0]">{room.room_code}</span>
+                <p className="font-bold text-[#202020]">{room.room_name}</p>
+                <p className="text-sm text-[#202020]/60 mt-1">
+                  Code: <span className="font-mono text-[#202020]">{room.room_code}</span>
                   {' · '}{room.player_count} player{room.player_count === 1 ? '' : 's'}
                 </p>
                 {room.winner && (
@@ -68,18 +68,18 @@ export default function RoomsListPage() {
                   </p>
                 )}
               </div>
-              <span className={`px-3 py-1 rounded-full border text-xs font-semibold ${statusStyle[room.status] || 'bg-slate-900/50 text-slate-300 border-slate-600'}`}>
+              <span className={`px-3 py-1 rounded-full border text-xs font-semibold ${statusStyle[room.status] || 'bg-white/60 text-[#202020]/75 border-[#202020]/25'}`}>
                 {room.status}
               </span>
               <div className="flex gap-2">
                 <Link href={`/admin/rooms/${room.id}`}>
-                  <button className="px-4 py-2 bg-slate-700 hover:bg-slate-600 text-white text-sm font-semibold rounded-lg transition">
+                  <button className="px-4 py-2 bg-[#202020]/10 hover:bg-[#202020]/20 text-[#202020] text-sm font-semibold rounded-lg transition">
                     Manage
                   </button>
                 </Link>
                 {room.status === 'finished' && (
                   <Link href={`/leaderboard/${room.room_code}`}>
-                    <button className="px-4 py-2 surface-accent text-white text-sm font-semibold rounded-lg transition">
+                    <button className="px-4 py-2 surface-accent text-[#202020] text-sm font-semibold rounded-lg transition">
                       View Results
                     </button>
                   </Link>

@@ -69,50 +69,50 @@ export default function CreateRoomPage() {
 
       <main className="max-w-md mx-auto px-6 py-10 flex flex-col gap-6">
         {created ? (
-          <div className="bg-green-900/20 border border-green-700 rounded-xl text-center p-8 space-y-4">
-            <h1 className="text-2xl font-bold text-white">✓ Room Created!</h1>
+          <div className="bg-green-200/50 border border-green-700/40 rounded-xl text-center p-8 space-y-4">
+            <h1 className="text-2xl font-bold text-[#202020]">✓ Room Created!</h1>
             <button
               onClick={copyCode}
-              className="inline-block px-4 py-2 surface-accent text-white font-mono font-bold rounded-lg transition-colors"
+              className="inline-block px-4 py-2 surface-accent text-[#202020] font-mono font-bold rounded-lg transition-colors"
             >
               {copied ? 'Copied!' : created.room_code}
             </button>
-            <p className="text-sm text-slate-300">Share this code with players</p>
+            <p className="text-sm text-[#202020]/75">Share this code with players</p>
             <Link href={`/admin/rooms/${created.id}`}>
-              <button className="inline-block mt-2 px-6 py-2 bg-white/10 hover:bg-white/20 text-white font-medium rounded-lg transition-colors">
+              <button className="inline-block mt-2 px-6 py-2 bg-[#202020]/10 hover:bg-[#202020]/20 text-[#202020] font-medium rounded-lg transition-colors">
                 Go to Room Control
               </button>
             </Link>
           </div>
         ) : (
           <>
-            <Link href="/admin/dashboard" className="text-[#DFD8D0]/80 hover:text-[#DFD8D0] text-sm font-medium">
+            <Link href="/admin/dashboard" className="text-[#202020]/70 hover:text-[#202020] text-sm font-medium">
               ← Back to Dashboard
             </Link>
 
-            <h1 className="text-3xl font-bold text-white text-center mb-2">Create New Room</h1>
+            <h1 className="text-3xl font-bold text-[#202020] text-center mb-2">Create New Room</h1>
 
             <form onSubmit={handleCreate} className="space-y-5">
               <div>
-                <label className="block text-sm font-medium text-slate-300 mb-1.5">Room Name</label>
+                <label className="block text-sm font-medium text-[#202020]/75 mb-1.5">Room Name</label>
                 <input
                   type="text"
                   placeholder="Room Name"
                   value={roomName}
                   onChange={(e) => setRoomName(e.target.value)}
                   disabled={loading}
-                  className="w-full px-4 py-3 bg-slate-900/50 border border-slate-600 rounded-lg text-white focus:ring-2 focus:ring-[#DFD8D0]/40 focus:border-[#DFD8D0] outline-none transition"
+                  className="w-full px-4 py-3 bg-white/60 border border-[#202020]/25 rounded-lg text-[#202020] focus:ring-2 focus:ring-[#202020]/30 focus:border-[#202020] outline-none transition"
                   required
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-slate-300 mb-1.5">Duration</label>
+                <label className="block text-sm font-medium text-[#202020]/75 mb-1.5">Duration</label>
                 <select
                   value={duration}
                   onChange={(e) => setDuration(e.target.value)}
                   disabled={loading}
-                  className="w-full px-4 py-3 bg-slate-900/50 border border-slate-600 rounded-lg text-white focus:ring-2 focus:ring-[#DFD8D0]/40 focus:border-[#DFD8D0] outline-none transition"
+                  className="w-full px-4 py-3 bg-white/60 border border-[#202020]/25 rounded-lg text-[#202020] focus:ring-2 focus:ring-[#202020]/30 focus:border-[#202020] outline-none transition"
                 >
                   <option value="300">5 minutes (default)</option>
                   <option value="600">10 minutes</option>
@@ -121,12 +121,12 @@ export default function CreateRoomPage() {
                 </select>
               </div>
 
-              {error && <p className="text-red-400 text-sm font-medium">{error}</p>}
+              {error && <p className="text-red-700 text-sm font-medium">{error}</p>}
 
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full py-3 px-4 surface-accent text-white font-semibold rounded-lg transition-colors disabled:opacity-50"
+                className="w-full py-3 px-4 surface-accent text-[#202020] font-semibold rounded-lg transition-colors disabled:opacity-50"
               >
                 {loading ? 'Creating...' : 'Create Room'}
               </button>

@@ -16,7 +16,7 @@ export default function PremiumHUD({ level = 1, xp = 450, maxXp = 1000, streak =
         <div className="flex items-center gap-2">
           <div className="premium-card px-3 py-2 flex items-center gap-2">
             <span className="text-sm font-bold text-amber-300">⭐</span>
-            <span className="text-lg font-bold text-white">Lvl {level}</span>
+            <span className="text-lg font-bold text-[#202020]">Lvl {level}</span>
           </div>
         </div>
 
@@ -40,7 +40,7 @@ export default function PremiumHUD({ level = 1, xp = 450, maxXp = 1000, streak =
       {/* XP Bar */}
       {maxXp && (
         <div className="max-w-550 mx-auto mt-3">
-          <div className="flex justify-between text-xs text-slate-400 mb-1">
+          <div className="flex justify-between text-xs text-[#202020]/60 mb-1">
             <span>XP</span>
             <span>{xp}/{maxXp}</span>
           </div>

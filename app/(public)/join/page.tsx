@@ -44,15 +44,15 @@ export default function JoinPage() {
   return (
     <div className="min-h-screen flex items-center justify-center px-4">
       <div className="max-w-md mx-auto w-full">
-        <Link href="/" className="text-[#DFD8D0]/80 hover:text-[#DFD8D0] text-sm font-medium mb-6 inline-block">
+        <Link href="/" className="text-[#202020]/70 hover:text-[#202020] text-sm font-medium mb-6 inline-block">
           ← Back to Home
         </Link>
 
-        <h1 className="text-3xl font-bold text-white text-center mb-8">Join Game</h1>
+        <h1 className="text-3xl font-bold text-[#202020] text-center mb-8">Join Game</h1>
 
         <form onSubmit={handleJoin} className="space-y-5">
           <div>
-            <label className="block text-sm font-medium text-slate-300 mb-1.5">Game Code</label>
+            <label className="block text-sm font-medium text-[#202020]/75 mb-1.5">Game Code</label>
             <input
               type="text"
               placeholder="e.g., ABC123"
@@ -63,12 +63,12 @@ export default function JoinPage() {
               autoComplete="off"
               autoCapitalize="characters"
               spellCheck="false"
-              className="w-full px-4 py-3 bg-slate-900/50 border border-slate-600 rounded-lg text-white focus:ring-2 focus:ring-[#DFD8D0]/40 focus:border-[#DFD8D0] outline-none transition"
+              className="w-full px-4 py-3 bg-white/60 border border-[#202020]/25 rounded-lg text-[#202020] focus:ring-2 focus:ring-[#202020]/30 focus:border-[#202020] outline-none transition"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-slate-300 mb-1.5">Username</label>
+            <label className="block text-sm font-medium text-[#202020]/75 mb-1.5">Username</label>
             <input
               type="text"
               placeholder="Your name"
@@ -76,16 +76,16 @@ export default function JoinPage() {
               onChange={(e) => setUsername(e.target.value)}
               disabled={loading}
               spellCheck="false"
-              className="w-full px-4 py-3 bg-slate-900/50 border border-slate-600 rounded-lg text-white focus:ring-2 focus:ring-[#DFD8D0]/40 focus:border-[#DFD8D0] outline-none transition"
+              className="w-full px-4 py-3 bg-white/60 border border-[#202020]/25 rounded-lg text-[#202020] focus:ring-2 focus:ring-[#202020]/30 focus:border-[#202020] outline-none transition"
             />
           </div>
 
-          {error && <p className="text-red-400 text-sm font-medium">{error}</p>}
+          {error && <p className="text-red-700 text-sm font-medium">{error}</p>}
 
           <button
             type="submit"
             disabled={loading || !roomCode || !username}
-            className="w-full py-3 px-4 surface-accent text-white font-semibold rounded-lg transition-colors disabled:opacity-50"
+            className="w-full py-3 px-4 surface-accent text-[#202020] font-semibold rounded-lg transition-colors disabled:opacity-50"
           >
             {loading ? 'Joining...' : 'Join Game'}
           </button>
