@@ -79,7 +79,7 @@ export default function LeaderboardPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-slate-900 to-slate-800 flex items-center justify-center px-4">
+      <div className="min-h-screen flex items-center justify-center px-4">
         <p className="text-[#202020]/60">Loading results...</p>
       </div>
     );
@@ -87,7 +87,7 @@ export default function LeaderboardPage() {
 
   if (error) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-slate-900 to-slate-800 flex items-center justify-center px-4">
+      <div className="min-h-screen flex items-center justify-center px-4">
         <div className="max-w-md w-full text-center">
           <p className="text-red-700 mb-4">{error}</p>
           <Link href="/">
@@ -102,7 +102,7 @@ export default function LeaderboardPage() {
 
   if (entries.length === 0) {
     return (
-      <div className="min-h-screen bg-gradient-to-b from-slate-900 to-slate-800 flex items-center justify-center px-4">
+      <div className="min-h-screen flex items-center justify-center px-4">
         <div className="max-w-md w-full text-center">
           <p className="text-[#202020]/60 mb-4">No submissions this round</p>
           <Link href="/">
@@ -152,7 +152,7 @@ export default function LeaderboardPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-slate-900 to-slate-800 px-4 py-12">
+    <div className="min-h-screen px-4 py-12">
       <div className="max-w-2xl mx-auto flex flex-col gap-6">
         {/* Title */}
         <div className="text-center">
