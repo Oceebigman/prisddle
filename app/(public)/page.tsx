@@ -11,7 +11,7 @@ export default function Landing() {
         
         <Link
           href="/join"
-          className="inline-block w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg transition"
+          className="inline-block w-full surface-accent text-white font-bold py-3 px-4 rounded-lg transition"
         >
           Join a Game
         </Link>

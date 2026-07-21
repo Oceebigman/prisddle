@@ -206,7 +206,7 @@ export default function PlayPage() {
           <p className="text-red-400 mb-4">{error}</p>
           <button 
             onClick={() => router.push(`/join?code=${code}`)}
-            className="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg"
+            className="px-6 py-2 surface-accent text-white rounded-lg"
           >
             Back to Join
           </button>
@@ -230,7 +230,7 @@ export default function PlayPage() {
           <p className="text-slate-400 mb-4">No questions available</p>
           <button 
             onClick={() => router.push('/')}
-            className="px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg"
+            className="px-6 py-2 surface-accent text-white rounded-lg"
           >
             Back to Home
           </button>
@@ -278,7 +278,7 @@ export default function PlayPage() {
         <div className="card-game p-4 mb-6">
           <div className="flex justify-between items-center mb-3">
             <span className="text-slate-400">Question {currentQuestion} of {questions.length}</span>
-            <span className="text-blue-400 font-bold">{answeredCount}/{questions.length} answered</span>
+            <span className="text-[#DFD8D0] font-bold">{answeredCount}/{questions.length} answered</span>
           </div>
           <div className="w-full bg-slate-700 rounded-full h-2">
             <div 
@@ -301,8 +301,8 @@ export default function PlayPage() {
                   onClick={() => handleSelectOption(idx)}
                   className={`w-full p-4 rounded-lg font-medium text-left transition-all ${
                     currentAnswer === idx
-                      ? 'surface-accent text-white border-2 border-indigo-300/60'
-                      : 'bg-slate-800/60 text-slate-200 border-2 border-slate-600 hover:border-indigo-400 hover:bg-slate-700/60'
+                      ? 'surface-accent text-white border-2 border-[#DFD8D0]/60'
+                      : 'bg-slate-800/60 text-slate-200 border-2 border-slate-600 hover:border-[#DFD8D0]/70 hover:bg-slate-700/60'
                   }`}
                 >
                   <span className="inline-block w-6 h-6 rounded border mr-3 text-center text-sm">

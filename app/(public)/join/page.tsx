@@ -44,7 +44,7 @@ export default function JoinPage() {
   return (
     <div className="min-h-screen flex items-center justify-center px-4">
       <div className="max-w-md mx-auto w-full">
-        <Link href="/" className="text-blue-400 hover:text-blue-300 text-sm font-medium mb-6 inline-block">
+        <Link href="/" className="text-[#DFD8D0]/80 hover:text-[#DFD8D0] text-sm font-medium mb-6 inline-block">
           ← Back to Home
         </Link>
 
@@ -63,7 +63,7 @@ export default function JoinPage() {
               autoComplete="off"
               autoCapitalize="characters"
               spellCheck="false"
-              className="w-full px-4 py-3 bg-slate-900/50 border border-slate-600 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
+              className="w-full px-4 py-3 bg-slate-900/50 border border-slate-600 rounded-lg text-white focus:ring-2 focus:ring-[#DFD8D0]/40 focus:border-[#DFD8D0] outline-none transition"
             />
           </div>
 
@@ -76,7 +76,7 @@ export default function JoinPage() {
               onChange={(e) => setUsername(e.target.value)}
               disabled={loading}
               spellCheck="false"
-              className="w-full px-4 py-3 bg-slate-900/50 border border-slate-600 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
+              className="w-full px-4 py-3 bg-slate-900/50 border border-slate-600 rounded-lg text-white focus:ring-2 focus:ring-[#DFD8D0]/40 focus:border-[#DFD8D0] outline-none transition"
             />
           </div>
 

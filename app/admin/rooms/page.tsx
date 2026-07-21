@@ -44,7 +44,7 @@ export default function RoomsListPage() {
     <div className="min-h-screen">
       <AdminHeader />
       <main className="max-w-4xl mx-auto px-6 py-10 flex flex-col gap-6">
-        <Link href="/admin/dashboard" className="text-blue-400 hover:text-blue-300 text-sm font-medium">
+        <Link href="/admin/dashboard" className="text-[#DFD8D0]/80 hover:text-[#DFD8D0] text-sm font-medium">
           ← Back to Dashboard
         </Link>
         <h1 className="text-3xl font-bold text-white">Rooms</h1>
@@ -59,7 +59,7 @@ export default function RoomsListPage() {
               <div className="flex-1 min-w-[200px]">
                 <p className="font-bold text-white">{room.room_name}</p>
                 <p className="text-sm text-slate-400 mt-1">
-                  Code: <span className="font-mono text-blue-400">{room.room_code}</span>
+                  Code: <span className="font-mono text-[#DFD8D0]">{room.room_code}</span>
                   {' · '}{room.player_count} player{room.player_count === 1 ? '' : 's'}
                 </p>
                 {room.winner && (

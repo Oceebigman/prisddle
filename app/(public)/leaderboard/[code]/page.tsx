@@ -91,7 +91,7 @@ export default function LeaderboardPage() {
         <div className="max-w-md w-full text-center">
           <p className="text-red-400 mb-4">{error}</p>
           <Link href="/">
-            <button className="inline-block px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition">
+            <button className="inline-block px-6 py-2 surface-accent text-white font-semibold rounded-lg transition">
               Back to Home
             </button>
           </Link>
@@ -106,7 +106,7 @@ export default function LeaderboardPage() {
         <div className="max-w-md w-full text-center">
           <p className="text-slate-400 mb-4">No submissions this round</p>
           <Link href="/">
-            <button className="inline-block px-6 py-2 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg transition">
+            <button className="inline-block px-6 py-2 surface-accent text-white font-semibold rounded-lg transition">
               Back to Home
             </button>
           </Link>
@@ -173,7 +173,7 @@ export default function LeaderboardPage() {
               </div>
               <p className="text-xl font-bold text-white">{entry.username}</p>
               <p className="text-sm text-slate-400 mt-2">{entry.correct_count}/{entry.total_questions} correct</p>
-              <p className="text-2xl font-bold text-blue-400 mt-2">{entry.score} pts</p>
+              <p className="text-2xl font-bold text-[#DFD8D0] mt-2">{entry.score} pts</p>
               <p className="text-xs text-slate-400 mt-1">{formatTime(entry.time_used_seconds)}</p>
             </div>
           ))}
@@ -197,7 +197,7 @@ export default function LeaderboardPage() {
                     {entry.correct_count}/{entry.total_questions} correct • {formatTime(entry.time_used_seconds)}
                   </p>
                 </div>
-                <p className="text-2xl font-bold text-blue-400">{entry.score}</p>
+                <p className="text-2xl font-bold text-[#DFD8D0]">{entry.score}</p>
               </div>
             ))}
           </div>

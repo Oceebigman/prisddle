@@ -86,7 +86,7 @@ export default function CreateRoomPage() {
           </div>
         ) : (
           <>
-            <Link href="/admin/dashboard" className="text-blue-400 hover:text-blue-300 text-sm font-medium">
+            <Link href="/admin/dashboard" className="text-[#DFD8D0]/80 hover:text-[#DFD8D0] text-sm font-medium">
               ← Back to Dashboard
             </Link>
 
@@ -101,7 +101,7 @@ export default function CreateRoomPage() {
                   value={roomName}
                   onChange={(e) => setRoomName(e.target.value)}
                   disabled={loading}
-                  className="w-full px-4 py-3 bg-slate-900/50 border border-slate-600 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
+                  className="w-full px-4 py-3 bg-slate-900/50 border border-slate-600 rounded-lg text-white focus:ring-2 focus:ring-[#DFD8D0]/40 focus:border-[#DFD8D0] outline-none transition"
                   required
                 />
               </div>
@@ -112,7 +112,7 @@ export default function CreateRoomPage() {
                   value={duration}
                   onChange={(e) => setDuration(e.target.value)}
                   disabled={loading}
-                  className="w-full px-4 py-3 bg-slate-900/50 border border-slate-600 rounded-lg text-white focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition"
+                  className="w-full px-4 py-3 bg-slate-900/50 border border-slate-600 rounded-lg text-white focus:ring-2 focus:ring-[#DFD8D0]/40 focus:border-[#DFD8D0] outline-none transition"
                 >
                   <option value="300">5 minutes (default)</option>
                   <option value="600">10 minutes</option>

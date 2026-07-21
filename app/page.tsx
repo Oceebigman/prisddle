@@ -4,7 +4,7 @@ export default function Landing() {
   return (
     <div className="min-h-screen flex items-center justify-center p-4">
       <div className="max-w-md w-full text-center rise-in">
-        <h1 className="text-6xl font-extrabold text-white tracking-tight mb-3">
+        <h1 className="font-brand-serif text-6xl font-bold text-white mb-3">
           Prisddle
         </h1>
         <div className="mx-auto mb-10 h-1 w-16 rounded-full surface-accent" />

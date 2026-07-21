@@ -95,7 +95,7 @@ export default function RoomControlPage() {
       <AdminHeader />
 
       <main className="max-w-2xl mx-auto px-6 py-10 flex flex-col gap-6">
-        <Link href="/admin/dashboard" className="text-blue-400 hover:text-blue-300 text-sm font-medium">
+        <Link href="/admin/dashboard" className="text-[#DFD8D0]/80 hover:text-[#DFD8D0] text-sm font-medium">
           ← Back to Dashboard
         </Link>
 
@@ -131,7 +131,7 @@ export default function RoomControlPage() {
 
             <div className="max-w-xs mx-auto rounded-lg bg-slate-900/50 border border-slate-700 px-8 py-4 my-2">
               <p className="text-slate-400 text-sm mb-1">Players Joined</p>
-              <p className="text-3xl font-bold text-blue-400">{playerCount}</p>
+              <p className="text-3xl font-bold text-[#DFD8D0]">{playerCount}</p>
             </div>
 
             {error && <p className="text-red-400 text-sm font-medium">{error}</p>}
@@ -150,7 +150,7 @@ export default function RoomControlPage() {
         <div className="card-game p-6">
           <h3 className="text-lg font-semibold text-white mb-3">Game Info</h3>
           <p className="text-slate-300 text-sm mb-2">
-            Room ID: <span className="font-mono text-blue-400 break-all">{id}</span>
+            Room ID: <span className="font-mono text-[#DFD8D0] break-all">{id}</span>
           </p>
           <p className="text-slate-400 text-sm">
             {started 

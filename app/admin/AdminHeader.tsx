@@ -10,7 +10,7 @@ export default function AdminHeader() {
     <header className="bg-slate-800 border-b border-slate-700">
       <div className="max-w-4xl mx-auto px-6 py-3 flex items-center justify-between">
         <Link href="/admin/dashboard">
-          <h1 className="text-xl font-bold text-white hover:text-blue-400 transition-colors cursor-pointer">
+          <h1 className="text-xl font-bold text-white hover:text-[#DFD8D0] transition-colors cursor-pointer">
             Prisddle Admin
           </h1>
         </Link>
