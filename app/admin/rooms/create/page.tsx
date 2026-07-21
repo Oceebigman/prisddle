@@ -12,6 +12,8 @@ export default function CreateRoomPage() {
   const [roomName, setRoomName] = useState('');
   const [duration, setDuration] = useState('120');
   const [questionCount, setQuestionCount] = useState('10');
+  const [edition, setEdition] = useState('7b86a0c6-3261-4d41-80fb-04d16d29393d');
+  const [editions, setEditions] = useState<{ id: string; title?: string; name?: string }[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [created, setCreated] = useState<{ id: string; room_code: string } | null>(null);
@@ -23,13 +25,21 @@ export default function CreateRoomPage() {
     }
   }, [isAdmin, router]);
 
+  useEffect(() => {
+    if (!adminKey) return;
+    fetch('/api/admin/puzzles', { headers: { 'x-admin-key': adminKey } })
+      .then((r) => (r.ok ? r.json() : []))
+      .then((d) => { if (Array.isArray(d) && d.length > 0) setEditions(d); })
+      .catch(() => {});
+  }, [adminKey]);
+
   const handleCreate = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
     setLoading(true);
 
     try {
-      const puzzleId = '7b86a0c6-3261-4d41-80fb-04d16d29393d';
+      const puzzleId = edition;
 
       const res = await fetch('/api/admin/rooms', {
         method: 'POST',
@@ -107,6 +117,22 @@ export default function CreateRoomPage() {
                   required
                 />
               </div>
+
+              {editions.length > 0 && (
+                <div>
+                  <label className="block text-sm font-medium text-[#202020]/75 mb-1.5">Edition</label>
+                  <select
+                    value={edition}
+                    onChange={(e) => setEdition(e.target.value)}
+                    disabled={loading}
+                    className="w-full px-4 py-3 bg-white/60 border border-[#202020]/25 rounded-lg outline-none transition"
+                  >
+                    {editions.map((p) => (
+                      <option key={p.id} value={p.id}>{p.title || p.name || p.id.slice(0, 8)}</option>
+                    ))}
+                  </select>
+                </div>
+              )}
 
               <div>
                 <label className="block text-sm font-medium text-[#202020]/75 mb-1.5">Duration</label>

@@ -80,13 +80,29 @@ export default function LeaderboardPage() {
 
     loadLeaderboard();
 
+    let reviewDone = false;
     const token = sessionStorage.getItem('session_token');
-    if (token) {
+    const fetchReview = () => {
+      if (!token || reviewDone) return;
       fetch(`/api/rooms/${code}/review?session_token=${token}`)
-        .then((r) => (r.ok ? r.json() : []))
-        .then((d) => { if (Array.isArray(d)) setReview(d); })
+        .then((r) => (r.ok ? r.json() : null))
+        .then((d) => {
+          if (Array.isArray(d) && d.length > 0) {
+            setReview(d);
+            reviewDone = true;
+          }
+        })
         .catch(() => {});
-    }
+    };
+    fetchReview();
+
+    // Live board: keep refreshing until the game is finished and review has loaded
+    const poll = setInterval(() => {
+      loadLeaderboard();
+      fetchReview();
+      if (reviewDone) clearInterval(poll);
+    }, 5000);
+    return () => clearInterval(poll);
   }, [code]);
 
   if (loading) {

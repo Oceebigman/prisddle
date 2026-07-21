@@ -41,13 +41,14 @@ export default function PlayPage() {
       }
 
       try {
+        let puzzleId = '7b86a0c6-3261-4d41-80fb-04d16d29393d';
         const statusRes = await fetch(`/api/rooms/${code}/status`);
         if (statusRes.ok) {
           const status = await statusRes.json();
           setRoomStatus(status);
+          if (status.puzzle_id) puzzleId = status.puzzle_id;
         }
 
-        const puzzleId = '7b86a0c6-3261-4d41-80fb-04d16d29393d';
         const res = await fetch(`/api/puzzles/${puzzleId}/play?session_token=${sessionToken}`);
         
         // Validate response is OK and is an array
