@@ -29,7 +29,7 @@ export default function AdminDashboardPage() {
           <Link href="/admin/rooms/create" className="block">
             <div className="w-full h-full surface-accent rounded-xl p-6 transition-colors cursor-pointer flex flex-col justify-center">
               <h2 className="text-lg font-semibold text-[#DFD8D0]">Create New Room</h2>
-              <p className="mt-1 text-[#202020]/70 text-sm">Start a new riddle competition</p>
+              <p className="mt-1 text-[#DFD8D0]/70 text-sm">Start a new riddle competition</p>
             </div>
           </Link>
 
