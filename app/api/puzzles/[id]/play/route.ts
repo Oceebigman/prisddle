@@ -22,6 +22,12 @@ export async function GET(
 
   if (!session) return NextResponse.json({ error: 'Invalid token' }, { status: 401 });
 
+  const { data: room } = await supabase
+    .from('rooms')
+    .select('starts_at')
+    .eq('id', session.room_id)
+    .single();
+
   const { data: questions } = await supabase
     .from('riddle_questions')
     .select('id, question_number, riddle_text, options, correct_index, points')
@@ -31,7 +37,8 @@ export async function GET(
   if (!questions) return NextResponse.json([]);
 
   // Deterministic per-room draw + option shuffle (same for all players in the room)
-  const selected = selectRoomQuestions(session.room_id, questions as RiddleQuestion[], 10);
+  const seed = session.room_id + ':' + (room?.starts_at || '');
+  const selected = selectRoomQuestions(seed, questions as RiddleQuestion[], 10);
 
   // Strip the answer key before it leaves the server
   const publicQuestions = selected.map(({ question_number, riddle_text, options }) => ({

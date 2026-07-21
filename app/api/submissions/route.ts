@@ -41,7 +41,8 @@ export async function POST(req: NextRequest) {
       .select('*')
       .eq('puzzle_id', room.puzzle_id);
     if (!questions) return NextResponse.json({ error: 'Puzzle not found' }, { status: 404 });
-    const roomQuestions = selectRoomQuestions(room.id, questions as RiddleQuestion[], 10);
+    const seed = room.id + ':' + (room.starts_at || '');
+    const roomQuestions = selectRoomQuestions(seed, questions as RiddleQuestion[], 10);
     const { score, correct_count, total_questions } = scoreRiddleSubmission(roomQuestions, submitted_answers);
     const startMs = room.starts_at ? new Date(room.starts_at).getTime() : now.getTime();
     const timeUsed = Math.max(0, Math.floor((now.getTime() - startMs) / 1000));
