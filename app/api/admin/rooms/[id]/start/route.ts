@@ -27,6 +27,9 @@ export async function POST(
       return NextResponse.json({ error: 'Room not found' }, { status: 404 });
     }
 
+    // Fresh session: clear previous submissions so every player can play and appear
+    await supabase.from('submissions').delete().eq('room_id', id);
+
     const actualEndsAt = new Date(startsAt.getTime() + room.duration_seconds * 1000);
 
     const { data: updated, error } = await supabase
