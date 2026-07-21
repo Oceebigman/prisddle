@@ -10,7 +10,8 @@ export default function CreateRoomPage() {
   const router = useRouter();
   const { isAdmin, adminKey } = useAdmin();
   const [roomName, setRoomName] = useState('');
-  const [duration, setDuration] = useState('300');
+  const [duration, setDuration] = useState('120');
+  const [questionCount, setQuestionCount] = useState('10');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [created, setCreated] = useState<{ id: string; room_code: string } | null>(null);
@@ -40,6 +41,7 @@ export default function CreateRoomPage() {
           room_name: roomName,
           puzzle_id: puzzleId,
           duration_seconds: parseInt(duration),
+          question_count: parseInt(questionCount),
         }),
       });
 
@@ -114,10 +116,26 @@ export default function CreateRoomPage() {
                   disabled={loading}
                   className="w-full px-4 py-3 bg-white/60 border border-[#202020]/25 rounded-lg text-[#202020] focus:ring-2 focus:ring-[#202020]/30 focus:border-[#202020] outline-none transition"
                 >
-                  <option value="300">5 minutes (default)</option>
+                  <option value="120">2 minutes (default)</option>
+                  <option value="180">3 minutes</option>
+                  <option value="300">5 minutes</option>
+                  <option value="480">8 minutes</option>
                   <option value="600">10 minutes</option>
-                  <option value="1200">20 minutes</option>
-                  <option value="1800">30 minutes</option>
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-[#202020]/75 mb-1.5">Questions</label>
+                <select
+                  value={questionCount}
+                  onChange={(e) => setQuestionCount(e.target.value)}
+                  disabled={loading}
+                  className="w-full px-4 py-3 bg-white/60 border border-[#202020]/25 rounded-lg outline-none transition"
+                >
+                  <option value="5">5 questions</option>
+                  <option value="10">10 questions (default)</option>
+                  <option value="15">15 questions</option>
+                  <option value="20">20 questions</option>
                 </select>
               </div>
 

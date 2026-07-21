@@ -17,7 +17,7 @@ export async function POST(req: NextRequest) {
   }
 
   try {
-    const { room_name, puzzle_id, duration_seconds } = await req.json();
+    const { room_name, puzzle_id, duration_seconds, question_count } = await req.json();
 
     if (!room_name || !puzzle_id || !duration_seconds) {
       return NextResponse.json({ error: 'Missing fields' }, { status: 400 });
@@ -57,6 +57,7 @@ export async function POST(req: NextRequest) {
         room_code,
         puzzle_id,
         duration_seconds,
+        question_count: question_count || 10,
         status: 'waiting',
       })
       .select()

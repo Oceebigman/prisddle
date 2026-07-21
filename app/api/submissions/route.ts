@@ -19,7 +19,7 @@ export async function POST(req: NextRequest) {
     if (!session) return NextResponse.json({ error: 'Invalid token' }, { status: 401 });
     const { data: room } = await supabase
       .from('rooms')
-      .select('id, starts_at, ends_at, puzzle_id')
+      .select('id, starts_at, ends_at, puzzle_id, question_count')
       .eq('id', session.room_id)
       .single();
     if (!room) return NextResponse.json({ error: 'Room not found' }, { status: 404 });
@@ -42,7 +42,7 @@ export async function POST(req: NextRequest) {
       .eq('puzzle_id', room.puzzle_id);
     if (!questions) return NextResponse.json({ error: 'Puzzle not found' }, { status: 404 });
     const seed = room.id + ':' + (room.starts_at || '');
-    const roomQuestions = selectRoomQuestions(seed, questions as RiddleQuestion[], 10);
+    const roomQuestions = selectRoomQuestions(seed, questions as RiddleQuestion[], room.question_count || 10);
     const { score, correct_count, total_questions } = scoreRiddleSubmission(roomQuestions, submitted_answers);
     const startMs = room.starts_at ? new Date(room.starts_at).getTime() : now.getTime();
     const timeUsed = Math.max(0, Math.floor((now.getTime() - startMs) / 1000));

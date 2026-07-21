@@ -24,7 +24,7 @@ export async function GET(
 
   const { data: room } = await supabase
     .from('rooms')
-    .select('starts_at')
+    .select('starts_at, question_count')
     .eq('id', session.room_id)
     .single();
 
@@ -38,7 +38,7 @@ export async function GET(
 
   // Deterministic per-room draw + option shuffle (same for all players in the room)
   const seed = session.room_id + ':' + (room?.starts_at || '');
-  const selected = selectRoomQuestions(seed, questions as RiddleQuestion[], 10);
+  const selected = selectRoomQuestions(seed, questions as RiddleQuestion[], room?.question_count || 10);
 
   // Strip the answer key before it leaves the server
   const publicQuestions = selected.map(({ question_number, riddle_text, options }) => ({
