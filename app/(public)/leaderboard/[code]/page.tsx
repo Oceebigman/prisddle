@@ -22,6 +22,10 @@ export default function LeaderboardPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [currentPlayer, setCurrentPlayer] = useState('');
+  const [review, setReview] = useState<{
+    question_number: number; riddle_text: string; options: string[];
+    correct_index: number; picked_index: number | null; correct: boolean;
+  }[]>([]);
 
   useEffect(() => {
     const loadLeaderboard = async () => {
@@ -75,6 +79,14 @@ export default function LeaderboardPage() {
     };
 
     loadLeaderboard();
+
+    const token = sessionStorage.getItem('session_token');
+    if (token) {
+      fetch(`/api/rooms/${code}/review?session_token=${token}`)
+        .then((r) => (r.ok ? r.json() : []))
+        .then((d) => { if (Array.isArray(d)) setReview(d); })
+        .catch(() => {});
+    }
   }, [code]);
 
   if (loading) {
@@ -198,6 +210,32 @@ export default function LeaderboardPage() {
                   </p>
                 </div>
                 <p className="text-2xl font-bold text-[#202020]">{entry.score}</p>
+              </div>
+            ))}
+          </div>
+        )}
+
+        {review.length > 0 && (
+          <div className="flex flex-col gap-3">
+            <h3 className="text-xl font-bold text-[#202020] text-center mt-4">Your Answers</h3>
+            {review.map((r) => (
+              <div
+                key={r.question_number}
+                className={`card-game p-4 border-l-4 ${r.correct ? 'border-l-green-600' : 'border-l-red-600'}`}
+              >
+                <p className="font-semibold text-[#202020] mb-1">
+                  {r.correct ? '✓' : '✗'} {r.riddle_text}
+                </p>
+                {r.picked_index !== null ? (
+                  <p className={`text-sm ${r.correct ? 'text-green-700' : 'text-red-700'}`}>
+                    Your answer: {r.options[r.picked_index]}
+                  </p>
+                ) : (
+                  <p className="text-sm text-[#202020]/50">Not answered</p>
+                )}
+                {!r.correct && (
+                  <p className="text-sm text-green-700">Correct answer: {r.options[r.correct_index]}</p>
+                )}
               </div>
             ))}
           </div>
