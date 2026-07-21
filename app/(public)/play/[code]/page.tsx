@@ -32,7 +32,7 @@ export default function PlayPage() {
 
   useEffect(() => {
     const loadQuestions = async () => {
-      const sessionToken = localStorage.getItem('session_token');
+      const sessionToken = sessionStorage.getItem('session_token');
       
       // No session token → redirect to join
       if (!sessionToken) {
@@ -92,7 +92,7 @@ export default function PlayPage() {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
-              session_token: localStorage.getItem('session_token'),
+              session_token: sessionStorage.getItem('session_token'),
               submitted_answers: answersRef.current,
             }),
           });
@@ -157,7 +157,7 @@ export default function PlayPage() {
   const handleSubmit = async () => {
     if (submitting) return;
     
-    const sessionToken = localStorage.getItem('session_token');
+    const sessionToken = sessionStorage.getItem('session_token');
     setSubmitting(true);
     
     try {
@@ -180,7 +180,7 @@ export default function PlayPage() {
 
       if (res.ok) {
         setSubmitted(true);
-        localStorage.removeItem('session_token');
+        sessionStorage.removeItem('session_token');
         setTimeout(() => {
           router.push(`/leaderboard/${code}`);
         }, 1500);

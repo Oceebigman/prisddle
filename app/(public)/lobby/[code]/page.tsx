@@ -36,8 +36,8 @@ export default function LobbyPage() {
     };
     fetchStatus();
     const poll = setInterval(fetchStatus, 15000);
-    const playerId = localStorage.getItem('player_id') || `anon-${Math.random().toString(36).slice(2, 8)}`;
-    const username = localStorage.getItem('username') || 'Player';
+    const playerId = sessionStorage.getItem('player_id') || `anon-${Math.random().toString(36).slice(2, 8)}`;
+    const username = sessionStorage.getItem('username') || 'Player';
     const channel = supabaseBrowser
       .channel(`room:${code}`, { config: { presence: { key: playerId } } })
       .on('postgres_changes',

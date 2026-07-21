@@ -25,7 +25,7 @@ export default function LeaderboardPage() {
 
   useEffect(() => {
     const loadLeaderboard = async () => {
-      const sessionToken = localStorage.getItem('session_token');
+      const sessionToken = sessionStorage.getItem('session_token');
       
       try {
         // Get room status first

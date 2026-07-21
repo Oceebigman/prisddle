@@ -32,9 +32,9 @@ export function JoinForm() {
       }
 
       const data = await res.json();
-      localStorage.setItem('session_token', data.session_token);
-      localStorage.setItem('player_id', data.player_id);
-      localStorage.setItem('username', username);
+      sessionStorage.setItem('session_token', data.session_token);
+      sessionStorage.setItem('player_id', data.player_id);
+      sessionStorage.setItem('username', username);
       
       router.push(`/lobby/${roomCode.toUpperCase()}`);
     } catch (err) {
