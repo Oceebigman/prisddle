@@ -181,7 +181,6 @@ export default function PlayPage() {
 
       if (res.ok) {
         setSubmitted(true);
-        sessionStorage.removeItem('session_token');
         setTimeout(() => {
           router.push(`/results/${code}`);
         }, 1500);

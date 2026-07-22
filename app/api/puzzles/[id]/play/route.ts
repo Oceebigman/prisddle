@@ -30,7 +30,7 @@ export async function GET(
 
   const { data: questions } = await supabase
     .from('riddle_questions')
-    .select('id, question_number, riddle_text, options, correct_index, points')
+    .select('id, question_number, riddle_text, options, correct_index, points, image_url')
     .eq('puzzle_id', id)
     .order('question_number');
 
@@ -41,10 +41,11 @@ export async function GET(
   const selected = selectRoomQuestions(seed, questions as RiddleQuestion[], room?.question_count || 10);
 
   // Strip the answer key before it leaves the server
-  const publicQuestions = selected.map(({ question_number, riddle_text, options }) => ({
+  const publicQuestions = selected.map(({ question_number, riddle_text, options, image_url }) => ({
     question_number,
     riddle_text,
     options,
+    image_url,
   }));
 
   return NextResponse.json(publicQuestions);

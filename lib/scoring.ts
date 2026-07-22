@@ -4,6 +4,7 @@ export interface RiddleQuestion {
   riddle_text: string;
   options: string[];
   correct_index: number;
+  image_url?: string | null;
   points: number;
 }
 

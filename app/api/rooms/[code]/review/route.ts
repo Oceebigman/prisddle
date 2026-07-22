@@ -38,7 +38,7 @@ export async function GET(
 
   const { data: questions } = await supabase
     .from('riddle_questions')
-    .select('id, question_number, riddle_text, options, correct_index, points')
+    .select('id, question_number, riddle_text, options, correct_index, points, image_url')
     .eq('puzzle_id', room.puzzle_id)
     .order('question_number');
   if (!questions) return NextResponse.json([]);
@@ -52,6 +52,7 @@ export async function GET(
     return {
       question_number: q.question_number,
       riddle_text: q.riddle_text,
+      image_url: (q as RiddleQuestion & { image_url?: string }).image_url || null,
       options: q.options,
       correct_index: q.correct_index,
       picked_index: picked ?? null,
