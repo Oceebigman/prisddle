@@ -26,9 +26,7 @@ export async function GET(
     .eq('id', session.room_id)
     .single();
   if (!room) return NextResponse.json({ error: 'Room not found' }, { status: 404 });
-  if (room.status !== 'finished') {
-    return NextResponse.json({ error: 'Game not finished' }, { status: 403 });
-  }
+
 
   const { data: submission } = await supabase
     .from('submissions')

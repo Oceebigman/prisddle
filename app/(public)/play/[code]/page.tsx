@@ -99,7 +99,7 @@ export default function PlayPage() {
           });
         } catch {}
       }
-      router.push(`/leaderboard/${CODE}`);
+      router.push(`/results/${CODE}`);
     };
     const channel = supabaseBrowser
       .channel(`room-status:${CODE}`)
@@ -183,10 +183,10 @@ export default function PlayPage() {
         setSubmitted(true);
         sessionStorage.removeItem('session_token');
         setTimeout(() => {
-          router.push(`/leaderboard/${code}`);
+          router.push(`/results/${code}`);
         }, 1500);
       } else if (res.status === 400) {
-        router.push(`/leaderboard/${code}`);
+        router.push(`/results/${code}`);
         return;
       } else {
         setError('Failed to submit. Please try again.');
