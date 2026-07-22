@@ -8,6 +8,7 @@ import Countdown from '../../components/Countdown';
 interface Question {
   question_number: number;
   riddle_text: string;
+  image_url?: string | null;
   options: string[];
 }
 
@@ -291,6 +292,10 @@ export default function PlayPage() {
         {/* Question Card */}
         <div className="card-game p-8 mb-6">
           <h2 className="text-2xl font-bold text-[#202020] mb-8">{question.riddle_text}</h2>
+          {question.image_url && (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img src={question.image_url} alt="Question image" className="mx-auto mb-6 max-h-40 rounded-lg border border-[#202020]/15 shadow" />
+          )}
 
           {/* Multiple Choice Options */}
           <div className="space-y-3 mb-6">
