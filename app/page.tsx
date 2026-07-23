@@ -3,8 +3,8 @@ import Link from 'next/link';
 import { useState } from 'react';
 
 const TEAM = [
-  { name: 'Ebuka', role: 'Founder & Product Lead', handle: 'heis_Ebuka_' },
-  { name: 'EGCrypt', role: 'Co-Founder & Lead Developer', handle: 'EGCrypt_' },
+  { name: 'Heluim+', role: 'Founder & Product Lead', handle: 'heis_Ebuka_' },
+  { name: 'GR3AT', role: 'Co-Founder & Lead Developer', handle: 'EGCrypt_' },
 ];
 
 export default function Landing() {
