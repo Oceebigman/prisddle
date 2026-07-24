@@ -1,6 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
   <rect width="64" height="64" rx="14" fill="#202020"/>
-  <text x="32" y="40" text-anchor="middle" font-family="Georgia, 'Times New Roman', serif"
-        font-size="38" font-weight="bold" fill="#DFD8D0">P</text>
-  <rect x="22" y="48" width="20" height="3" rx="1.5" fill="#DFD8D0"/>
+  <path d="M 22 26 A 10 10 0 1 1 32 36 L 32 41"
+        fill="none" stroke="#DFD8D0" stroke-width="5"
+        stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M 32 45 L 38 56 L 26 56 Z" fill="#DFD8D0"/>
 </svg>

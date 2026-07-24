@@ -9,7 +9,7 @@ const TEAM = [
 
 export default function Landing() {
   const [teamOpen, setTeamOpen] = useState(false);
-  const navBtn = "bg-transparent border border-[#202020]/20 hover:border-[#202020]/50 text-[#202020] font-semibold px-5 py-2 rounded-lg text-sm transition-colors";
+  const navBtn = "bg-transparent border border-[#202020]/20 hover:border-[#202020]/50 text-[#202020] font-normal px-5 py-2 rounded-lg text-sm transition-colors";
   return (
     <div className="min-h-screen flex flex-col">
       <header className="flex justify-end items-center gap-2 px-6 py-5 relative">
